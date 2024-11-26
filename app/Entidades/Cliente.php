@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entidades\Sistema;
+namespace App\Entidades;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -33,10 +33,10 @@ class Cliente extends Model
         return $lstRetorno;
     }
 
-    public function obtenerPorId($idcliente)
+    public function obtenerPorId($idcliente) 
     {
         $sql = "SELECT
-                idcliente,
+                  idcliente,
                   nombre,
                   apellido,
                   correo,
