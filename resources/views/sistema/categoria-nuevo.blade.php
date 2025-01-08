@@ -30,8 +30,8 @@
 @section('contenido')
 <?php
 if (isset($msg)) {
-      echo '<div id = "msg"></div>';
-      echo '<script>msgShow("' . $msg["MSG"] . '", "' . $msg["ESTADO"] . '")</script>';
+    echo '<div id = "msg"></div>';
+    echo '<script>msgShow("' . $msg["MSG"] . '", "' . $msg["ESTADO"] . '")</script>';
 }
 ?>
 <div class="panel-body">

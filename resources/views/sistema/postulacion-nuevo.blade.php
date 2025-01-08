@@ -65,7 +65,7 @@ if (isset($msg)) {
                 <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>CV: </label> <br>
-                    <input type="file" id="txtCV" name="txtCV" value="" required>
+                    <input type="file" id="txtCV" name="txtCV" >
                 </div>
             </div>
         </form>

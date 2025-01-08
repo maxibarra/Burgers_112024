@@ -67,8 +67,9 @@ if (isset($msg)) {
                     <label>Tipo de Producto: *</label>
                     <select id="lstTipoProducto" name="lstTipoProducto" class="form-control" required>
                         <option value="" disabled selected>Seleccionar</option>
-                        <option value="1" {{isset($menu) && $menu->activo == 1? 'selected' : ''}}>Si</option>
-                        <option value="0" {{isset($menu) &&$menu->activo == 0? 'selected' : ''}}>No</option>
+                        @foreach($aCategorias as $categoria)
+                        <option value="{{$categoria->idtipoproducto}}">{{$categoria->nombre}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>

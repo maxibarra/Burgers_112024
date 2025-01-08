@@ -43,8 +43,9 @@ if (isset($msg)) {
                         <label>Cliente: *</label>
                         <select id="lstCliente" name="lstCliente" class="form-control" required>
                               <option value="" disabled selected>Seleccionar</option>
-                              <option value="1" {{isset($menu) && $menu->activo == 1? 'selected' : ''}}>Si</option>
-                              <option value="0" {{isset($menu) &&$menu->activo == 0? 'selected' : ''}}>No</option>
+                              @foreach($aClientes as $cliente)
+                              <option value="{{$cliente->idcliente}}">{{$cliente->nombre}}</option>
+                              @endforeach
                         </select>
                   </div>
                   <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
@@ -53,8 +54,9 @@ if (isset($msg)) {
                         <label>Sucursal: *</label>
                         <select id="lstSucursal" name="lstSucursal" class="form-control" required>
                               <option value="" disabled selected>Seleccionar</option>
-                              <option value="1" {{isset($menu) && $menu->activo == 1? 'selected' : ''}}>Si</option>
-                              <option value="0" {{isset($menu) &&$menu->activo == 0? 'selected' : ''}}>No</option>
+                              @foreach($aSucursales as $sucursal)
+                              <option value="{{$sucursal->idsucursal}}">{{$sucursal->nombre}}</option>
+                              @endforeach
                         </select>
                   </div>
                   <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
@@ -63,8 +65,9 @@ if (isset($msg)) {
                         <label>Estado Pedido: *</label>
                         <select id="lstEstadoPedido" name="lstEstadoPedido" class="form-control" required>
                               <option value="" disabled selected>Seleccionar</option>
-                              <option value="1" {{isset($menu) && $menu->activo == 1? 'selected' : ''}}>Si</option>
-                              <option value="0" {{isset($menu) &&$menu->activo == 0? 'selected' : ''}}>No</option>
+                              @foreach($aEstadoPedidos as $estadoPedido)
+                              <option value="{{$estadoPedido->idestadopedido}}">{{$estadoPedido->nombre}}</option>
+                              @endforeach
                         </select>
                   </div>
                   <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>

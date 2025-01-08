@@ -18,6 +18,11 @@ class Tipo_Producto extends Model
 
     ];
 
+    public function cargarDesdeRequest($request) {
+        $this->idtipoproducto = $request->input('id') != "0" ? $request->input('id') : $this->idtipoproducto;
+        $this->nombre = $request->input('txtNombre');
+    }
+    
     public function obtenerTodos()
     {
         $sql = "SELECT
@@ -64,9 +69,33 @@ class Tipo_Producto extends Model
                   nombre
             ) VALUES (?);";
         $result = DB::insert($sql, [
-            $this->nombre,
+            $this->nombre
         ]);
         return $this->idtipoproducto = DB::getPdo()->lastInsertId();
+    }
+
+    public function obtenerFiltrado()
+    {
+        $request = $_REQUEST;
+        $columns = array(
+            0=> 'idtipoproducto',
+            1=> 'nombre'
+        );
+        $sql = "SELECT DISTINCT
+                    idtipoproducto,
+                    nombre
+                FROM tipo_productos
+                WHERE 1=1";
+
+        //Realiza el filtrado
+        if (!empty($request['search']['value'])) {
+            $sql .= " AND ( nombre LIKE '%" . $request['search']['value'] . "%' ";
+        }
+        $sql .= " ORDER BY " . $columns[$request['order'][0]['column']] . "   " . $request['order'][0]['dir'];
+
+        $lstRetorno = DB::select($sql);
+
+        return $lstRetorno;
     }
 
 }

@@ -43,32 +43,26 @@ if (isset($msg)) {
                     <label>Nombre: *</label>
                     <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="" required>
                 </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
-                    <label>Telefono: *</label>
-                    <input type="text" id="txtTelefono" name="txtTelefono" class="form-control" value="" required>
-                </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
-                <div class="form-group col-6">
-                    <label>dirección: *</label>
-                    <input type="text" id="txtDireccion" name="txtDireccion" class="form-control" value="" required>
-                </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
-                <div class="form-group col-6">
-                    <label>Documento: *</label>
-                    <input type="text" id="txtDni" name="txtDni" class="form-control" value="" required>
-                </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
+                    <label>Apellido: *</label>
+                    <input type="text" id="txtApellido" name="txtApellido" class="form-control" value="" required>
+                </div>              
                 <div class="form-group col-6">
                     <label>Correo: *</label>
                     <input type="email" id="txtCorreo" name="txtCorreo" class="form-control" value="" required>
+                </div>              
+                <div class="form-group col-6">
+                    <label>Documento: *</label>
+                    <input type="text" id="txtDni" name="txtDni" class="form-control" value="" required>
+                </div>              
+                <div class="form-group col-6">
+                    <label>Celular: *</label>
+                    <input type="text" id="txtTelefono" name="txtTelefono" class="form-control" value="" >
+                </div>              
+                <div class="form-group col-6">
+                    <label>Direccion: *</label>
+                    <input type="text" id="txtDireccion" name="txtDireccion" class="form-control" value="" required>
                 </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Clave: *</label>
                     <input type="password" id="txtClave" name="txtClave" class="form-control" value="" required>

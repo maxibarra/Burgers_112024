@@ -17,6 +17,13 @@ class Proveedor extends Model
     protected $hidden = [
 
     ];
+    public function cargarDesdeRequest($request) {
+        $this->idproveedor = $request->input('id') != "0" ? $request->input('id') : $this->idproveedor;
+        $this->nombre = $request->input('txtNombre');
+        $this->domicilio = $request->input('txtDomicilio');
+        $this->cuit = $request->input('txtCuit');
+        $this->fk_idrubro = $request->input('lstRubro');
+    }
 
     public function obtenerTodos()
     {
@@ -85,6 +92,40 @@ class Proveedor extends Model
             $this->fk_idrubro,
         ]);
         return $this->idproveedor = DB::getPdo()->lastInsertId();
+    }
+
+    public function obtenerFiltrado()
+    {
+        $request = $_REQUEST;
+        $columns = array(
+            0=> 'nombre',
+            1=> 'domicilio',
+            2=> 'cuit',
+            3=> 'r.nombre',
+            
+        );
+        $sql = "SELECT DISTINCT
+                    p.idproveedor,
+                    p.nombre,
+                    p.domicilio,
+                    p.cuit,
+                    r.nombre AS nombre_rubro 
+                FROM proveedores  p
+                INNER JOIN rubros r ON p.fk_idrubro = r.idrubro
+                WHERE 1=1";
+
+        //Realiza el filtrado
+        if (!empty($request['search']['value'])) {
+            $sql .= " AND ( nombre LIKE '%" . $request['search']['value'] . "%' ";
+            $sql .= " OR domicilio LIKE '%" . $request['search']['value'] . "%' ";
+            $sql .= " OR cuit LIKE '%" . $request['search']['value'] . "%' )";
+            $sql .= " OR r.nombre LIKE '%" . $request['search']['value'] . "%' )";
+        }
+        $sql .= " ORDER BY " . $columns[$request['order'][0]['column']] . "   " . $request['order'][0]['dir'];
+
+        $lstRetorno = DB::select($sql);
+
+        return $lstRetorno;
     }
 
 }

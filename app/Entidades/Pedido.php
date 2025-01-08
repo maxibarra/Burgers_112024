@@ -18,6 +18,15 @@ class Pedido extends Model
 
     ];
 
+    public function cargarDesdeRequest($request) {
+        $this->idpedido = $request->input('id') != "0" ? $request->input('id') : $this->idpedido;
+        $this->fk_idcliente = $request->input('lstCliente');
+        $this->fk_idsucursal = $request->input('lstSucursal');
+        $this->fk_idestadopedido = $request->input('lstEstadoPedido');
+        $this->fecha = $request->input('txtFecha');
+        $this->total = $request->input('txtTotal');
+    }
+
     public function obtenerTodos()
     {
         $sql = "SELECT
@@ -94,6 +103,43 @@ class Pedido extends Model
         return $this->idpedido = DB::getPdo()->lastInsertId();
     }
 
+    public function obtenerFiltrado()
+    {
+        $request = $_REQUEST;
+        $columns = array(
+            0 => 'a.nombre',
+            1 => 'b.nombre',
+            2 => 'c.nombre',
+            3 => 'fecha',
+            4 => 'total',
+        );
+        $sql = "SELECT DISTINCT
+                    p.idpedido,
+                    a.nombre AS cliente_nombre,
+                    b.nombre AS nombre_sucursal,
+                    c.nombre AS estadopedido_nombre,
+                    p.fecha,
+                    p.total
+                FROM pedidos p
+                INNER JOIN clientes a ON p.fk_idcliente = a.idcliente
+                INNER JOIN sucursales b ON p.fk_idsucursal = b.idsucursal
+                INNER JOIN estado_pedidos c ON p.fk_idestadopedido = c.idestadopedido
+                WHERE 1=1 ";
+
+        //Realiza el filtrado
+        if (!empty($request['search']['value'])) {
+            $sql .= " AND ( a.nombre LIKE '%" . $request['search']['value'] . "%' ";
+            $sql .= " OR b.nombre LIKE '%" . $request['search']['value'] . "%' ";
+            $sql .= " OR c.nombre LIKE '%" . $request['search']['value'] . "%' )";
+            $sql .= " OR fecha LIKE '%" . $request['search']['value'] . "%' )";
+            $sql .= " OR total LIKE '%" . $request['search']['value'] . "%' )";
+        }
+        $sql .= " ORDER BY " . $columns[$request['order'][0]['column']] . "   " . $request['order'][0]['dir'];
+
+        $lstRetorno = DB::select($sql);
+
+        return $lstRetorno;
+    }
 }
 
 ?>

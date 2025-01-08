@@ -59,10 +59,11 @@ if (isset($msg)) {
                 <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Rubro: *</label>
-                    <select id="lstTipoProducto" name="lstTipoProducto" class="form-control" required>
+                    <select id="lstRubro" name="lstRubro" class="form-control" required>
                         <option value="" disabled selected>Seleccionar</option>
-                        <option value="1" {{isset($menu) && $menu->activo == 1? 'selected' : ''}}>Si</option>
-                        <option value="0" {{isset($menu) &&$menu->activo == 0? 'selected' : ''}}>No</option>
+                        @foreach($aRubros as $rubro)
+                        <option value="{{$rubro->idrubro}}">{{$rubro->nombre}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
