@@ -27,8 +27,8 @@ if (isset($msg)) {
         <tr>
             <th>Nombre</th>
             <th>Apellido</th>
-            <th>Correo</th>
             <th>Whatsapp</th>
+            <th>Correo</th>
             <th>Link Cv</th>
         </tr>
     </thead>

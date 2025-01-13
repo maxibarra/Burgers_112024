@@ -16,7 +16,8 @@ class ControladorCliente extends Controller
       public function nuevo()
       {
             $titulo = "Nuevo CLiente";
-            return view("sistema.cliente-nuevo", compact("titulo"));
+            $cliente = new Cliente();
+            return view("sistema.cliente-nuevo", compact("titulo","cliente"));
       }
 
       public function index(){
@@ -27,7 +28,7 @@ class ControladorCliente extends Controller
       public function guardar(Request $request)
       {
             try {
-                  //Define la entidad servicio
+                  //Define la entidad cliente
                   $titulo = "Modificar cliente";
                   $entidad = new Cliente();
                   $entidad->cargarDesdeRequest($request);
@@ -81,7 +82,7 @@ class ControladorCliente extends Controller
         
         for ($i = $inicio; $i < count($aClientes) && $cont < $registros_por_pagina; $i++) {
             $row = array();
-            $row[] = '<a href="/admin/clientes/' . $aClientes[$i]->idcliente. '">' . $aClientes[$i]->nombre . '</a>';
+            $row[] = '<a href="/admin/cliente/' . $aClientes[$i]->idcliente. '">' . $aClientes[$i]->nombre . '</a>';
             $row[] = $aClientes[$i]->apellido;
             $row[] = $aClientes[$i]->correo;
             $row[] = $aClientes[$i]->celular;
@@ -99,5 +100,10 @@ class ControladorCliente extends Controller
         return json_encode($json_data);
     }
 
-
+    public function editar($idCliente){
+      $titulo = "Edición de cliente";
+      $cliente = new Cliente();
+      $cliente->obtenerPorId($idCliente);
+      return view("sistema.cliente-nuevo", compact("titulo","cliente"));
+    }
 }

@@ -25,10 +25,11 @@ if (isset($msg)) {
 <table id="grilla" class="display">
     <thead>
         <tr>
+            <th>Fecha</th>
             <th>Cliente</th>
             <th>Sucursal</th>
-            <th>Fecha</th>
             <th>Estado Pedido</th>
+            
             <th>Total</th>
         </tr>
     </thead>

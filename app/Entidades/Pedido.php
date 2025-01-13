@@ -70,7 +70,7 @@ class Pedido extends Model
           fk_idcliente=$this->fk_idcliente,
           fk_idsucursal=$this->fk_idsucursal,
           fk_idestadopedido=$this->fk_idestadopedido,
-          fecha=$this->fecha,
+          fecha='$this->fecha',
           total=$this->total
           
           WHERE idpedido=?";
@@ -107,30 +107,33 @@ class Pedido extends Model
     {
         $request = $_REQUEST;
         $columns = array(
-            0 => 'a.nombre',
-            1 => 'b.nombre',
-            2 => 'c.nombre',
+            0 => 'fk_idcliente',
+            1 => 'fk_idsucursal',
+            2 => 'fk_idestadopedido',
             3 => 'fecha',
             4 => 'total',
         );
         $sql = "SELECT DISTINCT
-                    p.idpedido,
-                    a.nombre AS cliente_nombre,
-                    b.nombre AS nombre_sucursal,
-                    c.nombre AS estadopedido_nombre,
-                    p.fecha,
-                    p.total
-                FROM pedidos p
-                INNER JOIN clientes a ON p.fk_idcliente = a.idcliente
-                INNER JOIN sucursales b ON p.fk_idsucursal = b.idsucursal
-                INNER JOIN estado_pedidos c ON p.fk_idestadopedido = c.idestadopedido
+                    a.idpedido,
+                    a.fk_idcliente,
+                    a.fk_idsucursal, 
+                    a.fk_idestadopedido,
+                    a.fecha,
+                    a.total,
+                    b.nombre AS cliente,
+                    c.nombre AS sucursal,
+                    d.nombre AS estadopedido
+                FROM pedidos a
+                INNER JOIN clientes b ON a.fk_idcliente = b.idcliente
+                INNER JOIN sucursales c ON a.fk_idsucursal = c.idsucursal
+                INNER JOIN estado_pedidos d ON a.fk_idestadopedido = d.idestadopedido
                 WHERE 1=1 ";
 
         //Realiza el filtrado
         if (!empty($request['search']['value'])) {
-            $sql .= " AND ( a.nombre LIKE '%" . $request['search']['value'] . "%' ";
-            $sql .= " OR b.nombre LIKE '%" . $request['search']['value'] . "%' ";
-            $sql .= " OR c.nombre LIKE '%" . $request['search']['value'] . "%' )";
+            $sql .= " AND ( b.nombre LIKE '%" . $request['search']['value'] . "%' ";
+            $sql .= " OR c.nombre LIKE '%" . $request['search']['value'] . "%' ";
+            $sql .= " OR d.nombre LIKE '%" . $request['search']['value'] . "%' )";
             $sql .= " OR fecha LIKE '%" . $request['search']['value'] . "%' )";
             $sql .= " OR total LIKE '%" . $request['search']['value'] . "%' )";
         }

@@ -55,7 +55,8 @@ class Producto extends Model
                   cantidad,
                   imagen,
                   fk_idtipoproducto
-                FROM productos WHERE idproducto = $idproducto";
+                FROM productos 
+                WHERE idproducto = $idproducto";
             $lstRetorno = DB::select($sql);
 
             if (count($lstRetorno) > 0) {
@@ -121,15 +122,19 @@ class Producto extends Model
             2 => 'precio',
             3 => 'cantidad',
             4 => 'imagen',
+            5 => 'fk_idtipoproducto'
         );
         $sql = "SELECT DISTINCT
-                    idproducto,
-                    nombre,
-                    descripcion,
-                    precio,
-                    cantidad,
-                    imagen
-                FROM productos
+                    a.idproducto,
+                    a.nombre,
+                    a.descripcion,
+                    a.precio,
+                    a.cantidad,
+                    a.imagen,
+                    a.fk_idtipoproducto,
+                    b.nombre AS tipoProducto
+                FROM productos a
+                INNER JOIN tipo_productos b ON a.fk_idtipoproducto = b.idtipoproducto
                 WHERE 1=1
                 ";
 
@@ -140,6 +145,7 @@ class Producto extends Model
             $sql .= " OR precio LIKE '%" . $request['search']['value'] . "%' )";
             $sql .= " OR cantidad LIKE '%" . $request['search']['value'] . "%' )";
             $sql .= " OR imagen LIKE '%" . $request['search']['value'] . "%' )";
+            $sql .= " OR b.nombre LIKE '%" . $request['search']['value'] . "%' )";
         }
         $sql .= " ORDER BY " . $columns[$request['order'][0]['column']] . "   " . $request['order'][0]['dir'];
 

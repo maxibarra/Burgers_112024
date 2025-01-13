@@ -10,7 +10,8 @@ class ControladorRubro extends Controller{
 
       public function nuevo(){
             $titulo = "Nuevo Rubro";
-            return view("sistema.rubro-nuevo",compact("titulo"));
+            $rubro = new Rubro();
+            return view("sistema.rubro-nuevo",compact("titulo","rubro"));
       }
       
       public function index(){
@@ -74,8 +75,7 @@ class ControladorRubro extends Controller{
           
           for ($i = $inicio; $i < count($aRubros) && $cont < $registros_por_pagina; $i++) {
               $row = array();
-              $row[] = '<a href="/admin/rubros/' . $aRubros[$i]->idrubro. '">' . $aRubros[$i]->idrubro. '</a>';
-              $row[] = $aRubros[$i]->nombre;
+              $row[] = '<a href="/admin/rubro/' . $aRubros[$i]->idrubro. '">' . $aRubros[$i]->nombre. '</a>';
               $cont++;
               $data[] = $row;
           }
@@ -88,4 +88,11 @@ class ControladorRubro extends Controller{
           );
           return json_encode($json_data);
       }
+
+      public function editar($idRubro){
+            $titulo = "Edición de Rubro";
+            $rubro = new Rubro();
+            $rubro->obtenerPorId($idRubro);
+            return view("sistema.rubro-nuevo", compact("titulo","rubro"));
+          }
 }

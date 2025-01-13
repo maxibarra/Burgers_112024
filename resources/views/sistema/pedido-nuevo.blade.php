@@ -41,46 +41,48 @@ if (isset($msg)) {
                   <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                   <div class="form-group col-6">
                         <label>Cliente: *</label>
-                        <select id="lstCliente" name="lstCliente" class="form-control" required>
+                        <select id="lstCliente" name="lstCliente" class="form-control"  required>
                               <option value="" disabled selected>Seleccionar</option>
                               @foreach($aClientes as $cliente)
-                              <option value="{{$cliente->idcliente}}">{{$cliente->nombre}}</option>
+                                    <option value="{{ $cliente->idcliente }}" 
+                                          {{ isset($pedido->fk_idcliente) && $pedido->fk_idcliente == $cliente->idcliente ? 'selected' : '' }}>
+                                          {{ $cliente->nombre }}
+                                    </option>
                               @endforeach
                         </select>
                   </div>
-                  <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                  <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                   <div class="form-group col-6">
                         <label>Sucursal: *</label>
                         <select id="lstSucursal" name="lstSucursal" class="form-control" required>
                               <option value="" disabled selected>Seleccionar</option>
                               @foreach($aSucursales as $sucursal)
-                              <option value="{{$sucursal->idsucursal}}">{{$sucursal->nombre}}</option>
+                                    <option value="{{ $sucursal->idsucursal }}" 
+                                          {{ isset($pedido->fk_idsucursal) && $pedido->fk_idsucursal == $sucursal->idsucursal ? 'selected' : '' }}>
+                                          {{ $sucursal->nombre }}
+                                    </option>
                               @endforeach
                         </select>
                   </div>
-                  <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                  <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                   <div class="form-group col-6">
                         <label>Estado Pedido: *</label>
                         <select id="lstEstadoPedido" name="lstEstadoPedido" class="form-control" required>
                               <option value="" disabled selected>Seleccionar</option>
                               @foreach($aEstadoPedidos as $estadoPedido)
-                              <option value="{{$estadoPedido->idestadopedido}}">{{$estadoPedido->nombre}}</option>
+                                    <option value="{{ $estadoPedido->idestadopedido }}" 
+                                          {{ isset($pedido->fk_idestadopedido) && $pedido->fk_idestadopedido == $estadoPedido->idestadopedido ? 'selected' : '' }}>
+                                          {{ $estadoPedido->nombre }}
+                                    </option>
                               @endforeach
                         </select>
                   </div>
-                  <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                  <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
+                
                   <div class="form-group col-6">
                         <label>Fecha: *</label>
-                        <input type="date" id="txtFecha" name="txtFecha" class="form-control" value="" required>
+                        <input type="date" id="txtFecha" name="txtFecha" class="form-control" value="{{$pedido->fecha}}" required>
                   </div>
-                  <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                  <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                   <div class="form-group col-6">
                         <label>Total: *</label>
-                        <input type="text" id="txtTotal" name="txtTotal" class="form-control" value="" required>
+                        <input type="text" id="txtTotal" name="txtTotal" class="form-control" value="{{$pedido->total}}" required>
                   </div>
             </div>
       </form>

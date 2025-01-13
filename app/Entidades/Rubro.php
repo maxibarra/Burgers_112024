@@ -18,6 +18,11 @@ class Rubro extends Model
 
     ];
 
+    public function cargarDesdeRequest($request) {
+        $this->idrubro = $request->input('id') != "0" ? $request->input('id') : $this->idrubro;
+        $this->nombre = $request->input('txtNombre');
+    }
+
     public function obtenerTodos()
     {
         $sql = "SELECT

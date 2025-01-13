@@ -70,7 +70,7 @@ class Sucursal extends Model
 
       public function guardar()
       {
-            $sql = "UPDATE productos SET
+            $sql = "UPDATE sucursales SET
           nombre='$this->nombre',
           direccion='$this->direccion',
           telefono='$this->telefono',

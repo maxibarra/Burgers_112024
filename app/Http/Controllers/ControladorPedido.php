@@ -13,13 +13,14 @@ class ControladorPedido extends Controller{
 
       public function nuevo(){
             $titulo = "Nuevo Pedido";
+            $pedido = new Pedido();
             $cliente = new Cliente();
             $aClientes = $cliente->obtenerTodos();
             $sucursal = new Sucursal();
             $aSucursales = $sucursal->obtenerTodos();
             $estadoPedido = new Estado_pedido();
             $aEstadoPedidos = $estadoPedido->obtenerTodos();
-            return view("sistema.pedido-nuevo",compact("titulo","aEstadoPedidos","aClientes","aSucursales"));
+            return view("sistema.pedido-nuevo",compact("titulo","pedido","aEstadoPedidos","aClientes","aSucursales"));
       }
 
       public function index(){
@@ -36,7 +37,7 @@ class ControladorPedido extends Controller{
                   $entidad->cargarDesdeRequest($request);
 
                   //validaciones
-                  if ($entidad->fecha == "" || $entidad->total == "") {
+                  if ($entidad->fk_idcliente=="" || $entidad->fk_idsucursal== "" ||$entidad->fk_idestadopedido =="" || $entidad->fecha == "" || $entidad->total == "") {
                         $msg["ESTADO"] = MSG_ERROR;
                         $msg["MSG"] = "Complete todos los datos";
                   } else {
@@ -83,10 +84,10 @@ class ControladorPedido extends Controller{
           
           for ($i = $inicio; $i < count($aPedidos) && $cont < $registros_por_pagina; $i++) {
               $row = array();
-              $row[] = '<a href="/admin/pedidos/' . $aPedidos[$i]->idpedido. '">' . $aPedidos[$i]->cliente_nombre . '</a>';
-              $row[] = $aPedidos[$i]->nombre_sucursal;
-              $row[] = $aPedidos[$i]->estadopedido_nombre;
-              $row[] = date('d/m/Y', strtotime($aPedidos[$i]->fecha));
+              $row[] = date('d/m/Y',strtotime($aPedidos[$i]->fecha));
+              $row[] = '<a href="/admin/pedido/' . $aPedidos[$i]->idpedido. '">' . $aPedidos[$i]->cliente . '</a>';
+              $row[] = $aPedidos[$i]->sucursal;
+              $row[] = $aPedidos[$i]->estadopedido;
               $row[] = '$' . " " . number_format($aPedidos[$i]->total,2,',','.');
               $cont++;
               $data[] = $row;
@@ -100,4 +101,17 @@ class ControladorPedido extends Controller{
           );
           return json_encode($json_data);
       }
+
+      public function editar($idPedido){
+            $titulo = "Edición de Pedido";
+            $pedido = new Pedido();
+            $pedido->obtenerPorId($idPedido);
+            $cliente = new Cliente();
+            $aClientes = $cliente->obtenerTodos();
+            $sucursal = new Sucursal();
+            $aSucursales = $sucursal->obtenerTodos();
+            $estadoPedido = new Estado_pedido();
+            $aEstadoPedidos = $estadoPedido->obtenerTodos();
+            return view("sistema.pedido-nuevo", compact("titulo","pedido","aClientes","aSucursales","aEstadoPedidos"));
+          }
 }

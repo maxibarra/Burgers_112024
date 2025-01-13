@@ -41,39 +41,36 @@ if (isset($msg)) {
                 <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Nombre: *</label>
-                    <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="" required>
+                    <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="{{$producto->nombre}}" required>
                 </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Descripción: *</label>
-                    <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" value="" required>
+                    <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" value="{{$producto->descripcion}}" >
                 </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
+               
                 <div class="form-group col-6">
                     <label>Precio: *</label>
-                    <input type="text" id="txtPrecio" name="txtPrecio" class="form-control" value="" required>
+                    <input type="text" id="txtPrecio" name="txtPrecio" class="form-control" value="{{$producto->precio}}" required>
                 </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
+              
                 <div class="form-group col-6">
                     <label>Cantidad: *</label>
-                    <input type="text" id="txtDni" name="txtDni" class="form-control" value="" required>
+                    <input type="text" id="txtDni" name="txtDni" class="form-control" value="{{$producto->cantidad}}" required>
                 </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Tipo de Producto: *</label>
                     <select id="lstTipoProducto" name="lstTipoProducto" class="form-control" required>
-                        <option value="" disabled selected>Seleccionar</option>
+                        <option value="" {{ !isset($producto->fk_idtipoproducto) ? 'selected' : '' }}>Seleccionar</option>
                         @foreach($aCategorias as $categoria)
-                        <option value="{{$categoria->idtipoproducto}}">{{$categoria->nombre}}</option>
+                            <option value="{{ $categoria->idtipoproducto }}" 
+                                @if(isset($producto->fk_idtipoproducto) && $producto->fk_idtipoproducto == $categoria->idtipoproducto) 
+                                    selected 
+                                @endif>
+                                {{ $categoria->nombre }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
-                <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Imagen: *</label> <br>
                     <input type="file" id="txtClave" name="txtClave" value="">

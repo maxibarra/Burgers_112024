@@ -9,7 +9,8 @@ class ControladorPostulacion extends Controller{
 
       public function nuevo(){
             $titulo = "Nueva Postulacion";
-            return view("sistema.postulacion-nuevo",compact("titulo"));
+            $postulacion = new Postulacion();
+            return view("sistema.postulacion-nuevo",compact("titulo","postulacion"));
       }
 
       public function index(){
@@ -26,7 +27,7 @@ class ControladorPostulacion extends Controller{
                   $entidad->cargarDesdeRequest($request);
 
                   //validaciones
-                  if ($entidad->nombre == "" || $entidad->apellido == "" || $entidad->whatsapp == "" || $entidad->correo == "" || $entidad->linkcv) {
+                  if ($entidad->nombre == "" || $entidad->apellido == "" || $entidad->whatsapp == "" || $entidad->correo == "") {
                         $msg["ESTADO"] = MSG_ERROR;
                         $msg["MSG"] = "Complete todos los datos";
                   } else {
@@ -73,11 +74,11 @@ class ControladorPostulacion extends Controller{
           
           for ($i = $inicio; $i < count($aPostulaciones) && $cont < $registros_por_pagina; $i++) {
               $row = array();
-              $row[] = '<a href="/admin/postulaciones/' . $aPostulaciones[$i]->idpostulacion. '">' . $aPostulaciones[$i]->nombre . '</a>';
+              $row[] = '<a href="/admin/postulacion/' . $aPostulaciones[$i]->idpostulacion. '">' . $aPostulaciones[$i]->nombre . '</a>';
               $row[] = $aPostulaciones[$i]->apellido;
               $row[] = $aPostulaciones[$i]->whatsapp;
               $row[] = $aPostulaciones[$i]->correo;
-              $row[] = '<a href="' . $aPostulaciones[$i]->linkcv . '" target="_blank">Ver CV</a>';
+              $row[] = '<a href="" target="_blank">Descargar</a>';
               $cont++;
               $data[] = $row;
           }
@@ -90,4 +91,11 @@ class ControladorPostulacion extends Controller{
           );
           return json_encode($json_data);
       }
+
+      public function editar($idPostulacion){
+            $titulo = "Edición de Postulaciones";
+            $postulacion = new Postulacion();
+            $postulacion->obtenerPorId($idPostulacion);
+            return view("sistema.postulacion-nuevo", compact("titulo","postulacion"));
+          }
 }

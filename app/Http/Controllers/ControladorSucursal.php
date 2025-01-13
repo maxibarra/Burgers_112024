@@ -10,7 +10,8 @@ class ControladorSucursal extends Controller{
 
       public function nuevo(){
             $titulo = "Nueva Sucursal";
-            return view("sistema.sucursal-nuevo",compact("titulo"));
+            $sucursal = new Sucursal();
+            return view("sistema.sucursal-nuevo",compact("titulo","sucursal"));
       }
 
       public function index(){
@@ -22,12 +23,12 @@ class ControladorSucursal extends Controller{
       {
             try {
                   //Define la entidad servicio
-                  $titulo = "Modificar producto";
+                  $titulo = "Modificar Sucursal";
                   $entidad = new Sucursal();
                   $entidad->cargarDesdeRequest($request);
 
                   //validaciones
-                  if ($entidad->nombre == "" || $entidad->telefono == "" || $entidad->direccion == "" || $entidad->mapa == "" || $entidad->horario== "") {
+                  if ($entidad->nombre == "" || $entidad->telefono == "" || $entidad->direccion == "" || $entidad->horario== "") {
                         $msg["ESTADO"] = MSG_ERROR;
                         $msg["MSG"] = "Complete todos los datos";
                   } else {
@@ -56,6 +57,7 @@ class ControladorSucursal extends Controller{
             $id = $entidad->idsucursal;
             $sucursal = new Sucursal();
             $sucursal->obtenerPorId($id);
+           
 
             return view('sistema.sucursal-nuevo', compact('msg', 'sucursal', 'titulo')) . '?id=' . $sucursal->idsucursal;
       }
@@ -64,8 +66,8 @@ class ControladorSucursal extends Controller{
       {
           $request = $_REQUEST;
   
-          $entidad = new Sucursal();
-          $aSucursales = $entidad->obtenerFiltrado();
+          $sucursal= new Sucursal();
+          $aSucursales = $sucursal->obtenerFiltrado();
   
           $data = array();
           $cont = 0;
@@ -74,10 +76,10 @@ class ControladorSucursal extends Controller{
           
           for ($i = $inicio; $i < count($aSucursales) && $cont < $registros_por_pagina; $i++) {
               $row = array();
-              $row[] = '<a href="/admin/sucursales/' . $aSucursales[$i]->idsucursal. '">' . $aSucursales[$i]->nombre . '</a>';
+              $row[] = '<a href="/admin/sucursal/' . $aSucursales[$i]->idsucursal. '">' . $aSucursales[$i]->nombre . '</a>';
               $row[] = $aSucursales[$i]->direccion;
               $row[] = $aSucursales[$i]->telefono;
-              $row[] = '<a href="' . $aSucursales[$i]->mapa . '" target="_blank">'. ' Ver Mapa ' . '</a>';
+              $row[] = '<a href="" target="_blank"> Ver Mapa  </a>';
               $row[] = $aSucursales[$i]->horario;
               $cont++;
               $data[] = $row;
@@ -91,4 +93,11 @@ class ControladorSucursal extends Controller{
           );
           return json_encode($json_data);
       }
+
+      public function editar($idSucursal){
+            $titulo = "Edición de Sucursales";
+            $sucursal = new Sucursal();
+            $sucursal->obtenerPorId($idSucursal);
+            return view("sistema.sucursal-nuevo", compact("titulo","sucursal"));
+          }
 }

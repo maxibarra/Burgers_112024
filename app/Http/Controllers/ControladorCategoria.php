@@ -10,7 +10,8 @@ class ControladorCategoria extends Controller{
 
       public function nuevo(){
             $titulo = "Nueva Categoría";
-            return view("sistema.categoria-nuevo",compact("titulo"));
+            $categoria = new Tipo_Producto();
+            return view("sistema.categoria-nuevo",compact("titulo","categoria"));
       }
 
       public function index(){
@@ -58,15 +59,15 @@ class ControladorCategoria extends Controller{
             $categoria = new Tipo_Producto();
             $categoria->obtenerPorId($id);
 
-            return view('sistema.categoria-nuevo', compact('msg', 'categoria', 'fecha')) . '?id=' . $categoria->idtipoproducto;
+            return view('sistema.categoria-nuevo', compact('msg', 'categoria')) . '?id=' . $categoria->idtipoproducto;
       }
 
       public function cargarGrilla(Request $request)
       {
           $request = $_REQUEST;
   
-          $entidad = new Tipo_Producto();
-          $aCategorias = $entidad->obtenerFiltrado();
+          $categoria = new Tipo_Producto();
+          $aCategorias = $categoria->obtenerFiltrado();
   
           $data = array();
           $cont = 0;
@@ -75,8 +76,7 @@ class ControladorCategoria extends Controller{
           
           for ($i = $inicio; $i < count($aCategorias) && $cont < $registros_por_pagina; $i++) {
               $row = array();
-              $row[] = '<a href="/admin/categorias/' . $aCategorias[$i]->idtipoproducto. '">' . $aCategorias[$i]->idtipoproducto . '</a>';
-              $row[] = $aCategorias[$i]->nombre;
+              $row[] = '<a href="/admin/categoria/' . $aCategorias[$i]->idtipoproducto. '">' . $aCategorias[$i]->nombre . '</a>';
               $cont++;
               $data[] = $row;
           }
@@ -89,4 +89,11 @@ class ControladorCategoria extends Controller{
           );
           return json_encode($json_data);
       }
+
+      public function editar($idTipoProducto){
+            $titulo = "Edición de Categorias";
+            $categoria = new Tipo_Producto();
+            $categoria->obtenerPorId($idTipoProducto);
+            return view("sistema.categoria-nuevo", compact("titulo","categoria"));
+          }
 }

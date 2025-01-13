@@ -2,8 +2,8 @@
 @section('titulo', $titulo)
 @section('scripts')
 <script>
-      globalId = '<?php echo isset($tipoProducto->idtipoproducto) && $tipoProducto->idtipoproducto > 0 ? $tipoProducto->idtipoproducto : 0; ?>';
-      <?php $globalId = isset($tipoProducto->idtipoproducto) ? $tipoProducto->idtipoproducto : "0"; ?>
+      globalId = '<?php echo isset($categoria->idtipoproducto) && $categoria->idtipoproducto > 0 ? $categoria->idtipoproducto : 0; ?>';
+      <?php $globalId = isset($categoria->idtipoproducto) ? $categoria->idtipoproducto : "0"; ?>
 </script>
 @endsection
 @section('breadcrumb')
@@ -41,7 +41,7 @@ if (isset($msg)) {
                   <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                   <div class="form-group col-6">
                         <label>Nombre: *</label>
-                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="" required>
+                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="{{$categoria->nombre}}" required>
                   </div>
             </div>
       </form>
