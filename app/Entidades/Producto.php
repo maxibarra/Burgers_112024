@@ -28,19 +28,19 @@ class Producto extends Model
             $this->descripcion = $request->input('txtDescripcion');
             $this->precio = $request->input('txtPrecio');
             $this->cantidad = $request->input('txtCantidad');
-            $this->tipoProducto = $request->input('lstTipoProducto');
+            $this->fk_idtipoproducto = $request->input('lstTipoProducto');
         }
       public function obtenerTodos()
       {
             $sql = "SELECT
                   idproducto,
-                  nombre,
+                  nombre,  
                   descripcion,
                   precio,
                   cantidad,
                   imagen,
                   fk_idtipoproducto
-                FROM productos ORDER BY nombre ASC";
+                FROM productos ORDER BY nombre";
             $lstRetorno = DB::select($sql);
             return $lstRetorno;
       }
@@ -55,8 +55,7 @@ class Producto extends Model
                   cantidad,
                   imagen,
                   fk_idtipoproducto
-                FROM productos 
-                WHERE idproducto = $idproducto";
+                FROM productos WHERE idproducto = $idproducto";
             $lstRetorno = DB::select($sql);
 
             if (count($lstRetorno) > 0) {
@@ -79,7 +78,7 @@ class Producto extends Model
           descripcion='$this->descripcion',
           precio=$this->precio,
           cantidad=$this->cantidad,
-          imagen='$this->imagen',
+        imagen='$this->imagen',
           fk_idtipoproducto=$this->fk_idtipoproducto
           WHERE idproducto=?";
             $affected = DB::update($sql, [$this->idproducto]);
@@ -152,5 +151,19 @@ class Producto extends Model
         $lstRetorno = DB::select($sql);
 
         return $lstRetorno;
+    }
+
+    public function existeProductosConCate($idCategoria){
+        $sql = "SELECT
+        idproducto,
+        nombre,
+        descripcion,
+        precio,
+        cantidad,
+        imagen,
+        fk_idtipoproducto
+      FROM productos WHERE fk_idtipoproducto = $idCategoria";
+      $lstRetorno = DB::select($sql);
+      return(count($lstRetorno) > 0);
     }
 }

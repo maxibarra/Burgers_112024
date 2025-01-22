@@ -66,10 +66,10 @@ class Rubro extends Model
     public function insertar()
     {
         $sql = "INSERT INTO rubros (
-                  nombre,
+                  nombre
             ) VALUES (?);";
         $result = DB::insert($sql, [
-            $this->nombre,
+            $this->nombre
         ]);
         return $this->idrubro = DB::getPdo()->lastInsertId();
     }

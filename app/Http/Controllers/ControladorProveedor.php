@@ -9,9 +9,10 @@ class ControladorProveedor extends Controller{
 
       public function nuevo(){
             $titulo = "Nuevo Proveedor";
+            $proveedor = new Proveedor();
             $rubro = new Rubro();
             $aRubros = $rubro->obtenerTodos();
-            return view("sistema.proveedor-nuevo",compact("titulo","aRubros"));
+            return view("sistema.proveedor-nuevo",compact("titulo","proveedor","aRubros"));
       }
 
       public function index(){
@@ -28,7 +29,7 @@ class ControladorProveedor extends Controller{
                   $entidad->cargarDesdeRequest($request);
 
                   //validaciones
-                  if ($entidad->nombre == "" || $entidad->domilicio == "" || $entidad->cuit == "" || $entidad->fk_idrubro == "") {
+                  if ($entidad->nombre == "" || $entidad->domicilio == "" || $entidad->cuit == "" || $entidad->fk_idrubro == "") {
                         $msg["ESTADO"] = MSG_ERROR;
                         $msg["MSG"] = "Complete todos los datos";
                   } else {
@@ -57,8 +58,10 @@ class ControladorProveedor extends Controller{
             $id = $entidad->idproveedor;
             $proveedor = new Proveedor();
             $proveedor->obtenerPorId($id);
+            $rubro = new Rubro();
+            $aRubros = $rubro->obtenerTodos();
 
-            return view('sistema.proveedor-nuevo', compact('msg', 'proveedor', 'titulo')) . '?id=' . $proveedor->idproveedor;
+            return view('sistema.proveedor-nuevo', compact('msg', 'proveedor', 'titulo',"aRubros")) . '?id=' . $proveedor->idproveedor;
       }
 
       public function cargarGrilla(Request $request)
@@ -75,7 +78,7 @@ class ControladorProveedor extends Controller{
         
         for ($i = $inicio; $i < count($aProveedores) && $cont < $registros_por_pagina; $i++) {
             $row = array();
-            $row[] = '<a href="/admin/proveedores/' . $aProveedores[$i]->idproveedor. '">' . $aProveedores[$i]->nombre . '</a>';
+            $row[] = '<a href="/admin/proveedor/' . $aProveedores[$i]->idproveedor. '">' . $aProveedores[$i]->nombre . '</a>';
             $row[] = $aProveedores[$i]->domicilio;
             $row[] = $aProveedores[$i]->cuit;
             $row[] = $aProveedores[$i]->nombre_rubro;
@@ -92,4 +95,23 @@ class ControladorProveedor extends Controller{
         );
         return json_encode($json_data);
     }
+
+    public function editar($idProveedor){
+      $titulo = "Edición de Proveedor";
+      $proveedor = new Proveedor();
+      $proveedor->obtenerPorId($idProveedor);
+      $rubro = new Rubro();
+      $aRubros = $rubro->obtenerTodos();
+      return view("sistema.proveedor-nuevo", compact("titulo","proveedor","aRubros"));
+    }
+
+    public function eliminar(Request $request){
+      $idProveedor = $request->input("id");
+      $proveedor = new Proveedor();
+      $proveedor->idproveedor = $idProveedor;
+      $proveedor->eliminar();
+      $resultado["err"] = EXIT_SUCCESS;
+      $resultado["mensaje"] = "Registro eliminado exitosamente.";
+      return json_encode($resultado);
+}
 }

@@ -10,7 +10,7 @@
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/admin/home">Inicio</a></li>
     <li class="breadcrumb-item"><a href="/admin/productos">Productos</a></li>
-    <li class="breadcrumb-item active">Modificar</li>
+    <li class="breadcrumb-item active">Nuevo</li>
 </ol>
 <ol class="toolbar">
     <li class="btn-item"><a title="Nuevo" href="/admin/producto/nuevo" class="fa fa-plus-circle" aria-hidden="true"><span>Nuevo</span></a></li>
@@ -30,10 +30,10 @@ function fsalir(){
 @section('contenido')
 <?php
 if (isset($msg)) {
-    echo '<div id = "msg"></div>';
     echo '<script>msgShow("' . $msg["MSG"] . '", "' . $msg["ESTADO"] . '")</script>';
 }
 ?>
+<div id = "msg"></div>
 <div class="panel-body">
         <form id="form1" method="POST">
             <div class="row">
@@ -55,12 +55,12 @@ if (isset($msg)) {
               
                 <div class="form-group col-6">
                     <label>Cantidad: *</label>
-                    <input type="text" id="txtDni" name="txtDni" class="form-control" value="{{$producto->cantidad}}" required>
+                    <input type="text" id="txtCantidad" name="txtCantidad" class="form-control" value="{{$producto->cantidad}}" required>
                 </div>
                 <div class="form-group col-6">
                     <label>Tipo de Producto: *</label>
                     <select id="lstTipoProducto" name="lstTipoProducto" class="form-control" required>
-                        <option value="" {{ !isset($producto->fk_idtipoproducto) ? 'selected' : '' }}>Seleccionar</option>
+                        <option value="" disabled selected>Seleccionar</option>
                         @foreach($aCategorias as $categoria)
                             <option value="{{ $categoria->idtipoproducto }}" 
                                 @if(isset($producto->fk_idtipoproducto) && $producto->fk_idtipoproducto == $categoria->idtipoproducto) 
@@ -73,7 +73,7 @@ if (isset($msg)) {
                 </div>
                 <div class="form-group col-6">
                     <label>Imagen: *</label> <br>
-                    <input type="file" id="txtClave" name="txtClave" value="">
+                    <input type="file" id="txtImg" name="txtImg" value="">
                 </div>
             </div>
         </form>
@@ -92,6 +92,24 @@ if (isset($msg)) {
             msgShow("Corrija los errores e intente nuevamente.", "danger");
             return false;
         }
+    }
+
+    function eliminar() {
+        $.ajax({
+            type: "GET",
+            url: "{{ asset('/admin/producto/eliminar') }}",
+            data: { id:globalId },
+            async: true,
+            dataType: "json",
+            success: function (data) {
+                if (data.mensaje != "0") {
+                    msgShow(data.mensaje , "success");
+                } else {
+                    msgShow(data.mensaje, "danger");
+                }
+                $('#mdlEliminar').modal('toggle');
+            }
+        });
     }
     </script>
 @endsection

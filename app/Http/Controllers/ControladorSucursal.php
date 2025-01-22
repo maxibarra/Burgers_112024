@@ -99,5 +99,15 @@ class ControladorSucursal extends Controller{
             $sucursal = new Sucursal();
             $sucursal->obtenerPorId($idSucursal);
             return view("sistema.sucursal-nuevo", compact("titulo","sucursal"));
-          }
+      }
+
+      public function eliminar(Request $request){
+            $idSucursal = $request->input("id");
+            $sucursal = new Sucursal();
+            $sucursal->idsucursal = $idSucursal;
+            $sucursal->eliminar();
+            $resultado["err"] = EXIT_SUCCESS;
+            $resultado["mensaje"] = "Registro eliminado exitosamente.";
+            return json_encode($resultado);
+      }
 }

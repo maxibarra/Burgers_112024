@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Entidades\Rubro;
+use App\Entidades\Proveedor;
 require app_path() . '/start/constants.php';
 class ControladorRubro extends Controller{
 
@@ -94,5 +95,23 @@ class ControladorRubro extends Controller{
             $rubro = new Rubro();
             $rubro->obtenerPorId($idRubro);
             return view("sistema.rubro-nuevo", compact("titulo","rubro"));
+      }
+
+      public function eliminar(Request $request){
+            $idRubro = $request->input("id");
+            $proveedor = new Proveedor();
+            //Si el proveedor tiene un rubro asociado no se tiene que poder eliminar
+            if($proveedor->existeProveedoresConRubro($idRubro)){
+                  $resultado["err"] = EXIT_FAILURE;
+                  $resultado["mensaje"] = "No se puede eliminar un rubro con proveedores asociados";
+            }else{
+                  //sino si
+                  $rubro = new Rubro();
+                  $rubro->idrubro = $idRubro;
+                  $rubro->eliminar();
+                  $resultado["err"] = EXIT_SUCCESS;
+                  $resultado["mensaje"] = "Registro eliminado exitosamente.";
+            }
+            return json_encode($resultado);
           }
 }

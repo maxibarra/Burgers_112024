@@ -30,10 +30,10 @@
 @section('contenido')
 <?php
 if (isset($msg)) {
-    echo '<div id = "msg"></div>';
     echo '<script>msgShow("' . $msg["MSG"] . '", "' . $msg["ESTADO"] . '")</script>';
 }
 ?>
+<div id = "msg"></div>
 <div class="panel-body">
         <form id="form1" method="POST">
             <div class="row">
@@ -41,19 +41,19 @@ if (isset($msg)) {
                 <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Nombre: *</label>
-                    <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="" required>
+                    <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="{{$proveedor->nombre}}" required>
                 </div>
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
                 <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Domicilio: *</label>
-                    <input type="text" id="txtDomicilio" name="txtDomicilio" class="form-control" value="" required>
+                    <input type="text" id="txtDomicilio" name="txtDomicilio" class="form-control" value="{{$proveedor->domicilio}}" required>
                 </div>
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
                 <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                 <div class="form-group col-6">
                     <label>Cuit: *</label>
-                    <input type="text" id="txtCuit" name="txtCuit" class="form-control" value="" required>
+                    <input type="text" id="txtCuit" name="txtCuit" class="form-control" value="{{$proveedor->cuit}}" required>
                 </div>
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
                 <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
@@ -62,8 +62,11 @@ if (isset($msg)) {
                     <select id="lstRubro" name="lstRubro" class="form-control" required>
                         <option value="" disabled selected>Seleccionar</option>
                         @foreach($aRubros as $rubro)
-                        <option value="{{$rubro->idrubro}}">{{$rubro->nombre}}</option>
-                        @endforeach
+                                    <option value="{{ $rubro->idrubro }}" 
+                                          {{ isset($proveedor->fk_idrubro) && $proveedor->fk_idrubro == $rubro->idrubro ? 'selected' : '' }}>
+                                          {{ $rubro->nombre }}
+                                    </option>
+                              @endforeach
                     </select>
                 </div>
             </div>
@@ -84,5 +87,26 @@ if (isset($msg)) {
             return false;
         }
     }
+
+    function eliminar() {
+        $.ajax({
+            type: "GET",
+            url: "{{asset('/admin/proveedor/eliminar')}}",
+            data: { id:globalId },
+            async: true,
+            dataType: "json",
+            success: function (data) {
+                if (data.err !== '0') {
+                    msgShow(data.mensaje, "danger");
+                    $("#btnEnviar").hide();
+                    $("#btnEliminar").hide();
+                    $("#mdlEliminar").modal("toggle");
+                } else {
+                    msgShow(data.mensaje, "success");
+                    $("#mdlEliminar").modal("toggle");
+                }
+            }
+        });
+      }
     </script>
 @endsection

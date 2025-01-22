@@ -30,10 +30,10 @@ function fsalir(){
 @section('contenido')
 <?php
 if (isset($msg)) {
-    echo '<div id = "msg"></div>';
     echo '<script>msgShow("' . $msg["MSG"] . '", "' . $msg["ESTADO"] . '")</script>';
 }
 ?>
+<div id = "msg"></div>
 <div class="panel-body">
         <form id="form1" method="POST">
             <div class="row">
@@ -77,5 +77,26 @@ if (isset($msg)) {
             return false;
         }
     }
+
+    function eliminar() {
+        $.ajax({
+            type: "GET",
+            url: "{{asset('/admin/sucursal/eliminar')}}",
+            data: { id:globalId },
+            async: true,
+            dataType: "json",
+            success: function (data) {
+                if (data.err !== '0') {
+                    msgShow(data.mensaje, "danger");
+                    $("#btnEnviar").hide();
+                    $("#btnEliminar").hide();
+                    $("#mdlEliminar").modal("toggle");
+                } else {
+                    msgShow(data.mensaje, "success");
+                    $("#mdlEliminar").modal("toggle");
+                }
+            }
+        });
+      }
     </script>
 @endsection

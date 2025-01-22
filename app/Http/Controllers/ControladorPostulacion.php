@@ -97,5 +97,15 @@ class ControladorPostulacion extends Controller{
             $postulacion = new Postulacion();
             $postulacion->obtenerPorId($idPostulacion);
             return view("sistema.postulacion-nuevo", compact("titulo","postulacion"));
-          }
+      }
+ 
+      public function eliminar(Request $request){
+            $idPostulacion = $request->input("id");
+            $postulacion = new Postulacion();
+            $postulacion->idpostulacion = $idPostulacion;
+            $postulacion->eliminar();
+            $resultado["err"] = EXIT_SUCCESS;
+            $resultado["mensaje"] = "Registro eliminado exitosamente.";
+            return json_encode($resultado);
+      }
 }

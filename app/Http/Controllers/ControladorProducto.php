@@ -10,10 +10,9 @@ class ControladorProducto extends Controller{
       public function nuevo(){
             $titulo = "Nuevo Producto";
             $producto = new Producto();
-            $producto->obtenerTodos();
             $categoria = new Tipo_Producto();
             $aCategorias = $categoria->obtenerTodos();
-            return view("sistema.producto-nuevo",compact("titulo","producto", "aCategorias"));
+            return view("sistema.producto-nuevo",compact("titulo","producto","aCategorias"));
       }
 
       public function index(){
@@ -27,12 +26,10 @@ class ControladorProducto extends Controller{
                   //Define la entidad servicio
                   $titulo = "Modificar producto";
                   $entidad = new Producto();
-                  $categoria = new Tipo_Producto();
-                  $aCategorias = $categoria->obtenerTodos();
                   $entidad->cargarDesdeRequest($request);
 
                   //validaciones
-                  if ($entidad->nombre == "" || $entidad->descripcion == "" || $entidad->precio == "" || $entidad->cantidad == "" || $entidad->fk_idtipoproducto== "" ) {
+                  if ($entidad->nombre == "" || $entidad->descripcion == "" || $entidad->precio == "" || $entidad->cantidad == "" || $entidad->fk_idtipoproducto == "") {
                         $msg["ESTADO"] = MSG_ERROR;
                         $msg["MSG"] = "Complete todos los datos";
                   } else {
@@ -109,6 +106,17 @@ class ControladorProducto extends Controller{
       $categoria = new Tipo_Producto();
       $aCategorias = $categoria->obtenerTodos();
       return view("sistema.producto-nuevo", compact("titulo","producto","aCategorias"));
+    }
+
+
+    public function eliminar(Request $request){
+      $idProducto = $request->input("id");
+            $producto = new Producto();
+            $producto->idproducto = $idProducto;
+            $producto->eliminar();
+            $resultado["err"] = EXIT_SUCCESS;
+            $resultado["mensaje"] = "Registro eliminado exitosamente.";
+            return json_encode($resultado);
     }
 
 }

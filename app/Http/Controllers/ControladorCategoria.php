@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Entidades\Producto;
 use Illuminate\Http\Request;
 use App\Entidades\Tipo_Producto;
+use App\Entidades\Rubro;
 require app_path() . '/start/constants.php';
 
 class ControladorCategoria extends Controller{
@@ -90,10 +92,29 @@ class ControladorCategoria extends Controller{
           return json_encode($json_data);
       }
 
-      public function editar($idTipoProducto){
-            $titulo = "Edición de Categorias";
+      public function editar($idCategoria){
+            $titulo = "Edición de categoria";
             $categoria = new Tipo_Producto();
-            $categoria->obtenerPorId($idTipoProducto);
+            $categoria->obtenerPorId($idCategoria);
+            
             return view("sistema.categoria-nuevo", compact("titulo","categoria"));
+      }
+
+      public function eliminar(Request $request){
+            $idCategoria = $request->input("id");
+            $producto = new Producto();
+            //Si el cliente tiene un pedido asociado no se tiene que poder eliminar
+            if($producto->existeProductosConCate($idCategoria)){
+                  $resultado["err"] = EXIT_FAILURE;
+                  $resultado["mensaje"] = "No se puede eliminar una categoria con productos asociados";
+            }else{
+                  //sino si
+                  $categoria = new Tipo_Producto();
+                  $categoria->idcategoria = $idCategoria;
+                  $categoria->eliminar();
+                  $resultado["err"] = EXIT_SUCCESS;
+                  $resultado["mensaje"] = "Registro eliminado exitosamente.";
+            }
+            return json_encode($resultado);
           }
 }

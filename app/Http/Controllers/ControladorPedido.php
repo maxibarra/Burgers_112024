@@ -20,7 +20,7 @@ class ControladorPedido extends Controller{
             $aSucursales = $sucursal->obtenerTodos();
             $estadoPedido = new Estado_pedido();
             $aEstadoPedidos = $estadoPedido->obtenerTodos();
-            return view("sistema.pedido-nuevo",compact("titulo","pedido","aEstadoPedidos","aClientes","aSucursales"));
+            return view("sistema.pedido-nuevo",compact("titulo","pedido","aClientes","aEstadoPedidos","aSucursales"));
       }
 
       public function index(){
@@ -66,8 +66,14 @@ class ControladorPedido extends Controller{
             $id = $entidad->idpedido;
             $pedido = new Pedido();
             $pedido->obtenerPorId($id);
+            $cliente = new Cliente();
+            $aClientes = $cliente->obtenerTodos();
+            $sucursal = new Sucursal();
+            $aSucursales = $sucursal->obtenerTodos();
+            $estadoPedido = new Estado_pedido();
+            $aEstadoPedidos = $estadoPedido->obtenerTodos();
 
-            return view('sistema.pedido-nuevo', compact('msg', 'pedido', 'fecha')) . '?id=' . $pedido->idpedido;
+            return view('sistema.pedido-nuevo', compact('msg', 'pedido', 'fecha',"aEstadoPedidos","aClientes","aSucursales")) . '?id=' . $pedido->idpedido;
       }
 
       public function cargarGrilla(Request $request)
@@ -113,5 +119,15 @@ class ControladorPedido extends Controller{
             $estadoPedido = new Estado_pedido();
             $aEstadoPedidos = $estadoPedido->obtenerTodos();
             return view("sistema.pedido-nuevo", compact("titulo","pedido","aClientes","aSucursales","aEstadoPedidos"));
-          }
+      }
+
+      public function eliminar(Request $request){
+            $idPedido = $request->input("id");
+            $pedido = new Pedido();
+            $pedido->idpedido = $idPedido;
+            $pedido->eliminar();
+            $resultado["err"] = EXIT_SUCCESS;
+            $resultado["mensaje"] = "Registro eliminado exitosamente.";
+            return json_encode($resultado);
+      }
 }

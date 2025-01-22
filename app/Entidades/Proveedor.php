@@ -54,7 +54,7 @@ class Proveedor extends Model
             $this->nombre = $lstRetorno[0]->nombre;
             $this->domicilio = $lstRetorno[0]->domicilio;
             $this->cuit = $lstRetorno[0]->cuit;
-            $this->fk_idrubro = $lstRetorno[0]->fk_idrubro;
+            $this->fk_idrubro=$lstRetorno[0]->fk_idrubro;
             return $this;
         }
         return null;
@@ -65,7 +65,7 @@ class Proveedor extends Model
           nombre='$this->nombre',
           domicilio='$this->domicilio',
           cuit=$this->cuit,
-          fk_idrubro=$this->fk_idrubro   
+          fk_idrubro=$this->fk_idrubro  
           WHERE idproveedor=?";
       $affected = DB::update($sql, [$this->idproveedor]);
   }
@@ -89,7 +89,7 @@ class Proveedor extends Model
             $this->nombre,
             $this->domicilio,
             $this->cuit,
-            $this->fk_idrubro,
+            $this->fk_idrubro
         ]);
         return $this->idproveedor = DB::getPdo()->lastInsertId();
     }
@@ -101,7 +101,7 @@ class Proveedor extends Model
             0=> 'nombre',
             1=> 'domicilio',
             2=> 'cuit',
-            3=> 'r.nombre',
+            3=> 'fk_idrubro'
             
         );
         $sql = "SELECT DISTINCT
@@ -126,6 +126,18 @@ class Proveedor extends Model
         $lstRetorno = DB::select($sql);
 
         return $lstRetorno;
+    }
+
+    public function existeProveedoresConRubro($idProveedor){
+        $sql = "SELECT
+                  idproveedor,
+                  nombre,
+                  domicilio,
+                  cuit,
+                  fk_idrubro
+                FROM proveedores WHERE fk_idrubro = $idProveedor";
+        $lstRetorno = DB::select($sql);
+        return(count($lstRetorno) > 0);
     }
 
 }

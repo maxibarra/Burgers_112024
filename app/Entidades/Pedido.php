@@ -36,7 +36,7 @@ class Pedido extends Model
                   fk_idestadopedido,
                   fecha,
                   total
-                FROM pedidos ORDER BY fecha DESC";
+                FROM pedidos ORDER BY fecha ASC";
         $lstRetorno = DB::select($sql);
         return $lstRetorno;
     }
@@ -143,6 +143,22 @@ class Pedido extends Model
 
         return $lstRetorno;
     }
+
+
+    public function existePedidosPorCliente($idCliente)
+    {
+        $sql = "SELECT
+                  idpedido,
+                  fk_idcliente,
+                  fk_idsucursal,
+                  fk_idestadopedido,
+                  fecha,
+                  total
+                FROM pedidos WHERE fk_idcliente = $idCliente";
+        $lstRetorno = DB::select($sql);
+        return(count($lstRetorno) > 0);
+    }
+    
 }
 
 ?>
