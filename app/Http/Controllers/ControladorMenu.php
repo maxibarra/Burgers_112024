@@ -64,9 +64,20 @@ class ControladorMenu extends Controller
     public function nuevo()
     {
         $titulo = "Nuevo Menú";
-        $menu = new Menu();
-        $array_menu = $menu->obtenerMenuPadre();
-        return view('sistema.menu-nuevo', compact('menu', 'titulo', 'array_menu'));
+        if (Usuario::autenticado() == true) {
+            if (!Patente::autorizarOperacion("MENUALTA")) {
+                  $codigo = "MENUALTA";
+                  $mensaje = "No tiene permisos para la operación.";
+                  return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+            } else {
+                $menu = new Menu();
+                $array_menu = $menu->obtenerMenuPadre();
+                return view('sistema.menu-nuevo', compact('menu', 'titulo', 'array_menu'));
+            }
+      } else {
+            return redirect('admin/login');
+      }
+       
 
     }
 

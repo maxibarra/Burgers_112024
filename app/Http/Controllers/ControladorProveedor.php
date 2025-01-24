@@ -4,20 +4,45 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Entidades\Proveedor;
 use App\Entidades\Rubro;
+use App\Entidades\Sistema\Usuario;
+use App\Entidades\Sistema\Patente;
+
 require app_path() . '/start/constants.php';
 class ControladorProveedor extends Controller{
 
       public function nuevo(){
             $titulo = "Nuevo Proveedor";
-            $proveedor = new Proveedor();
-            $rubro = new Rubro();
-            $aRubros = $rubro->obtenerTodos();
-            return view("sistema.proveedor-nuevo",compact("titulo","proveedor","aRubros"));
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("PROVEEDORALTA")) {
+                        $codigo = "PROVEEDORALTA";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        $proveedor = new Proveedor();
+                        $rubro = new Rubro();
+                        $aRubros = $rubro->obtenerTodos();
+                        return view("sistema.proveedor-nuevo",compact("titulo","proveedor","aRubros"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
+           
       }
 
       public function index(){
             $titulo = "Listado de Proveedores";
-            return view("sistema.proveedor-listar",compact("titulo"));
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("PROVEEDORCONSULTA")) {
+                        $codigo = "PROVEEDORCONSULTA1";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        return view("sistema.proveedor-listar",compact("titulo"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
+            
       }
       
       public function guardar(Request $request)
@@ -98,20 +123,41 @@ class ControladorProveedor extends Controller{
 
     public function editar($idProveedor){
       $titulo = "Edición de Proveedor";
-      $proveedor = new Proveedor();
-      $proveedor->obtenerPorId($idProveedor);
-      $rubro = new Rubro();
-      $aRubros = $rubro->obtenerTodos();
-      return view("sistema.proveedor-nuevo", compact("titulo","proveedor","aRubros"));
+      if (Usuario::autenticado() == true) {
+            if (!Patente::autorizarOperacion("PROVEEDOREDITAR")) {
+                  $codigo = "PROVEEDOREDITAR";
+                  $mensaje = "No tiene permisos para la operación.";
+                  return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+            } else {
+                  $proveedor = new Proveedor();
+                  $proveedor->obtenerPorId($idProveedor);
+                  $rubro = new Rubro();
+                  $aRubros = $rubro->obtenerTodos();
+                  return view("sistema.proveedor-nuevo", compact("titulo","proveedor","aRubros"));
+            }
+      } else {
+            return redirect('admin/login');
+      }
+      
     }
 
     public function eliminar(Request $request){
-      $idProveedor = $request->input("id");
-      $proveedor = new Proveedor();
-      $proveedor->idproveedor = $idProveedor;
-      $proveedor->eliminar();
-      $resultado["err"] = EXIT_SUCCESS;
-      $resultado["mensaje"] = "Registro eliminado exitosamente.";
+      if (Usuario::autenticado() == true) {
+            if (!Patente::autorizarOperacion("PROVEEDORELIMINAR")) {
+                  $resultado["err"] = EXIT_FAILURE;
+                  $resultado["mensaje"] = "No tiene permisos para la operación";
+            } else {
+                  $idProveedor = $request->input("id");
+                  $proveedor = new Proveedor();
+                  $proveedor->idproveedor = $idProveedor;
+                  $proveedor->eliminar();
+                  $resultado["err"] = EXIT_SUCCESS;
+                  $resultado["mensaje"] = "Registro eliminado exitosamente.";
+            }
+      } else {
+            $resultado["err"] = EXIT_FAILURE;
+            $resultado["mensaje"] = "Usuario no autenticado";
+      }
       return json_encode($resultado);
 }
 }

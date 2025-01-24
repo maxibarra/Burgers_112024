@@ -6,6 +6,8 @@ use App\Entidades\Pedido;
 use App\Entidades\Cliente;
 use App\Entidades\Sucursal;
 use App\Entidades\Estado_pedido;
+use App\Entidades\Sistema\Usuario;
+use App\Entidades\Sistema\Patente;
 
 require app_path() . '/start/constants.php';
 
@@ -13,19 +15,40 @@ class ControladorPedido extends Controller{
 
       public function nuevo(){
             $titulo = "Nuevo Pedido";
-            $pedido = new Pedido();
-            $cliente = new Cliente();
-            $aClientes = $cliente->obtenerTodos();
-            $sucursal = new Sucursal();
-            $aSucursales = $sucursal->obtenerTodos();
-            $estadoPedido = new Estado_pedido();
-            $aEstadoPedidos = $estadoPedido->obtenerTodos();
-            return view("sistema.pedido-nuevo",compact("titulo","pedido","aClientes","aEstadoPedidos","aSucursales"));
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("PEDIDOALTA")) {
+                        $codigo = "PEDIDOALTA";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        $pedido = new Pedido();
+                        $cliente = new Cliente();
+                        $aClientes = $cliente->obtenerTodos();
+                        $sucursal = new Sucursal();
+                        $aSucursales = $sucursal->obtenerTodos();
+                        $estadoPedido = new Estado_pedido();
+                        $aEstadoPedidos = $estadoPedido->obtenerTodos();
+                        return view("sistema.pedido-nuevo",compact("titulo","pedido","aClientes","aEstadoPedidos","aSucursales"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
       }
 
       public function index(){
             $titulo = "Listado de Pedidos";
-            return view("sistema.pedido-listar", compact("titulo"));
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("PEDIDOCONSULTA")) {
+                        $codigo = "PEDIDOCONSULTA";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        return view("sistema.pedido-listar", compact("titulo"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
+            
       }
 
       public function guardar(Request $request)
@@ -110,24 +133,47 @@ class ControladorPedido extends Controller{
 
       public function editar($idPedido){
             $titulo = "Edición de Pedido";
-            $pedido = new Pedido();
-            $pedido->obtenerPorId($idPedido);
-            $cliente = new Cliente();
-            $aClientes = $cliente->obtenerTodos();
-            $sucursal = new Sucursal();
-            $aSucursales = $sucursal->obtenerTodos();
-            $estadoPedido = new Estado_pedido();
-            $aEstadoPedidos = $estadoPedido->obtenerTodos();
-            return view("sistema.pedido-nuevo", compact("titulo","pedido","aClientes","aSucursales","aEstadoPedidos"));
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("PEDIDOEDITAR")) {
+                        $codigo = "PEDIDOEDITAR";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        $pedido = new Pedido();
+                        $pedido->obtenerPorId($idPedido);
+                        $cliente = new Cliente();
+                        $aClientes = $cliente->obtenerTodos();
+                        $sucursal = new Sucursal();
+                        $aSucursales = $sucursal->obtenerTodos();
+                        $estadoPedido = new Estado_pedido();
+                        $aEstadoPedidos = $estadoPedido->obtenerTodos();
+                        return view("sistema.pedido-nuevo", compact("titulo","pedido","aClientes","aSucursales","aEstadoPedidos"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
       }
 
-      public function eliminar(Request $request){
-            $idPedido = $request->input("id");
-            $pedido = new Pedido();
-            $pedido->idpedido = $idPedido;
-            $pedido->eliminar();
-            $resultado["err"] = EXIT_SUCCESS;
-            $resultado["mensaje"] = "Registro eliminado exitosamente.";
+      public function eliminar(Request $request)
+      {
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("PEDIDOBAJA")) {
+                        $resultado["err"] = EXIT_FAILURE;
+                        $resultado["mensaje"] = "No tiene permisos para la operación";
+                  } else {
+                        $idPedido = $request->input("id");
+                        $pedido = new Pedido();
+                        $pedido->idpedido = $idPedido;
+                        $pedido->eliminar();
+                        $resultado["err"] = EXIT_SUCCESS;
+                        $resultado["mensaje"] = "Registro eliminado exitosamente.";
+                        
+                  }
+            } else {
+                  $resultado["err"] = EXIT_FAILURE;
+                  $resultado["mensaje"] = "Usuario no autenticado";
+            }
             return json_encode($resultado);
+
       }
 }

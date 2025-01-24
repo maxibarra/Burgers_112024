@@ -104,19 +104,22 @@ if (isset($msg)) {
       function eliminar() {
         $.ajax({
             type: "GET",
-            url: "{{ asset('/admin/pedido/eliminar') }}",
+            url: "{{asset('/admin/pedido/eliminar')}}",
             data: { id:globalId },
             async: true,
             dataType: "json",
             success: function (data) {
-                if (data.mensaje != "0") {
-                    msgShow(data.mensaje , "success");
-                } else {
+                if (data.err !== '0') {
                     msgShow(data.mensaje, "danger");
+                    $("#btnEnviar").hide();
+                    $("#btnEliminar").hide();
+                    $("#mdlEliminar").modal("toggle");
+                } else {
+                    msgShow(data.mensaje, "success");
+                    $("#mdlEliminar").modal("toggle");
                 }
-                $('#mdlEliminar').modal('toggle');
             }
         });
-    }
+      }
 </script>
 @endsection

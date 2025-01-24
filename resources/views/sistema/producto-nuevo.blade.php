@@ -30,6 +30,7 @@ function fsalir(){
 @section('contenido')
 <?php
 if (isset($msg)) {
+    echo '<div id = "msg"></div>';
     echo '<script>msgShow("' . $msg["MSG"] . '", "' . $msg["ESTADO"] . '")</script>';
 }
 ?>
@@ -44,20 +45,6 @@ if (isset($msg)) {
                     <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="{{$producto->nombre}}" required>
                 </div>
                 <div class="form-group col-6">
-                    <label>Descripción: *</label>
-                    <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" value="{{$producto->descripcion}}" >
-                </div>
-               
-                <div class="form-group col-6">
-                    <label>Precio: *</label>
-                    <input type="text" id="txtPrecio" name="txtPrecio" class="form-control" value="{{$producto->precio}}" required>
-                </div>
-              
-                <div class="form-group col-6">
-                    <label>Cantidad: *</label>
-                    <input type="text" id="txtCantidad" name="txtCantidad" class="form-control" value="{{$producto->cantidad}}" required>
-                </div>
-                <div class="form-group col-6">
                     <label>Tipo de Producto: *</label>
                     <select id="lstTipoProducto" name="lstTipoProducto" class="form-control" required>
                         <option value="" disabled selected>Seleccionar</option>
@@ -70,6 +57,19 @@ if (isset($msg)) {
                             </option>
                         @endforeach
                     </select>
+                </div>
+                <div class="form-group col-6">
+                    <label>Precio: *</label>
+                    <input type="text" id="txtPrecio" name="txtPrecio" class="form-control" value="{{$producto->precio}}" required>
+                </div>
+              
+                <div class="form-group col-6">
+                    <label>Cantidad: *</label>
+                    <input type="text" id="txtCantidad" name="txtCantidad" class="form-control" value="{{$producto->cantidad}}" required>
+                </div>
+                <div class="form-group col-6">
+                    <label>Descripción: *</label>
+                    <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" value="{{$producto->descripcion}}" >
                 </div>
                 <div class="form-group col-6">
                     <label>Imagen: *</label> <br>
@@ -97,17 +97,20 @@ if (isset($msg)) {
     function eliminar() {
         $.ajax({
             type: "GET",
-            url: "{{ asset('/admin/producto/eliminar') }}",
+            url: "{{asset('/admin/producto/eliminar')}}",
             data: { id:globalId },
             async: true,
             dataType: "json",
             success: function (data) {
-                if (data.mensaje != "0") {
-                    msgShow(data.mensaje , "success");
-                } else {
+                if (data.err !== '0') {
                     msgShow(data.mensaje, "danger");
+                    $("#btnEnviar").hide();
+                    $("#btnEliminar").hide();
+                    $("#mdlEliminar").modal("toggle");
+                } else {
+                    msgShow(data.mensaje, "success");
+                    $("#mdlEliminar").modal("toggle");
                 }
-                $('#mdlEliminar').modal('toggle');
             }
         });
     }

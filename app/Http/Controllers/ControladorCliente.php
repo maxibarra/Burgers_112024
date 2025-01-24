@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Entidades\Cliente;
+use App\Entidades\Sistema\Usuario;
+use App\Entidades\Sistema\Patente;
 use App\Entidades\Pedido;
 
 
@@ -17,15 +19,36 @@ class ControladorCliente extends Controller
       public function nuevo()
       {
             $titulo = "Nuevo CLiente";
-            $cliente = new Cliente();
-            return view("sistema.cliente-nuevo", compact("titulo","cliente"));
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("CLIENTEALTA")) {
+                        $codigo = "CLIENTEALTA";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        $cliente = new Cliente();
+                        return view("sistema.cliente-nuevo", compact("titulo", "cliente"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
       }
 
-      public function index(){
+      public function index()
+      {
             $titulo = "Listado de Clientes";
-            return view("sistema.cliente-listar", compact("titulo"));
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("CLIENTECONSULTA")) {
+                        $codigo = "CLIENTECONSULTA";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        return view("sistema.cliente-listar", compact("titulo"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
       }
-      
+
       public function guardar(Request $request)
       {
             try {
@@ -60,8 +83,8 @@ class ControladorCliente extends Controller
                   $msg["ESTADO"] = MSG_ERROR;
                   $msg["MSG"] = ERRORINSERT;
             }
-      
-      
+
+
             $id = $entidad->idcliente;
             $cliente = new Cliente();
             $cliente->obtenerPorId($id);
@@ -70,59 +93,81 @@ class ControladorCliente extends Controller
       }
 
       public function cargarGrilla(Request $request)
-    {
-        $request = $_REQUEST;
+      {
+            $request = $_REQUEST;
 
-        $entidad = new Cliente();
-        $aClientes = $entidad->obtenerFiltrado();
+            $entidad = new Cliente();
+            $aClientes = $entidad->obtenerFiltrado();
 
-        $data = array();
-        $cont = 0;
-        $inicio = $request['start'];
-        $registros_por_pagina = $request['length'];
-        
-        for ($i = $inicio; $i < count($aClientes) && $cont < $registros_por_pagina; $i++) {
-            $row = array();
-            $row[] = '<a href="/admin/cliente/' . $aClientes[$i]->idcliente. '">' . $aClientes[$i]->nombre . '</a>';
-            $row[] = $aClientes[$i]->apellido;
-            $row[] = $aClientes[$i]->correo;
-            $row[] = $aClientes[$i]->celular;
-            $row[] = $aClientes[$i]->direccion;
-            $cont++;
-            $data[] = $row;
-        }
+            $data = array();
+            $cont = 0;
+            $inicio = $request['start'];
+            $registros_por_pagina = $request['length'];
 
-        $json_data = array(
-            "draw" => intval($request['draw']),
-            "recordsTotal" => count($aClientes), //cantidad total de registros sin paginar
-            "recordsFiltered" => count($aClientes), //cantidad total de registros en la paginacion
-            "data" => $data,
-        );
-        return json_encode($json_data);
-    }
+            for ($i = $inicio; $i < count($aClientes) && $cont < $registros_por_pagina; $i++) {
+                  $row = array();
+                  $row[] = '<a href="/admin/cliente/' . $aClientes[$i]->idcliente . '">' . $aClientes[$i]->nombre . '</a>';
+                  $row[] = $aClientes[$i]->apellido;
+                  $row[] = $aClientes[$i]->correo;
+                  $row[] = $aClientes[$i]->celular;
+                  $row[] = $aClientes[$i]->direccion;
+                  $cont++;
+                  $data[] = $row;
+            }
 
-    public function editar($idCliente){
-      $titulo = "Edición de cliente";
-      $cliente = new Cliente();
-      $cliente->obtenerPorId($idCliente);
-      return view("sistema.cliente-nuevo", compact("titulo","cliente"));
-    }
-
-    public function eliminar(Request $request){
-      $idCliente = $request->input("id");
-      $pedido = new Pedido();
-      //Si el cliente tiene un pedido asociado no se tiene que poder eliminar
-      if($pedido->existePedidosPorCliente($idCliente)){
-            $resultado["err"] = EXIT_FAILURE;
-            $resultado["mensaje"] = "No se puede eliminar un cliente con pedidos asociados";
-      }else{
-            //sino si
-            $cliente = new Cliente();
-            $cliente->idcliente = $idCliente;
-            $cliente->eliminar();
-            $resultado["err"] = EXIT_SUCCESS;
-            $resultado["mensaje"] = "Registro eliminado exitosamente.";
+            $json_data = array(
+                  "draw" => intval($request['draw']),
+                  "recordsTotal" => count($aClientes), //cantidad total de registros sin paginar
+                  "recordsFiltered" => count($aClientes), //cantidad total de registros en la paginacion
+                  "data" => $data,
+            );
+            return json_encode($json_data);
       }
-      return json_encode($resultado);
-    }
+
+      public function editar($idCliente)
+      {
+            $titulo = "Edición de cliente";
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("CLIENTEEDITAR")) {
+                        $codigo = "CLIENTEEDITAR";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        $cliente = new Cliente();
+                        $cliente->obtenerPorId($idCliente);
+                        return view("sistema.cliente-nuevo", compact("titulo", "cliente"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
+      }
+
+      public function eliminar(Request $request)
+      {
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("CLIENTEELIMINAR")) {
+                        $resultado["err"] = EXIT_FAILURE;
+                        $resultado["mensaje"] = "No tiene permisos para la operación";
+                  } else {
+                        $idCliente = $request->input("id");
+                        $pedido = new Pedido();
+                        //Si el cliente tiene un pedido asociado no se tiene que poder eliminar
+                        if ($pedido->existePedidosPorCliente($idCliente)) {
+                              $resultado["err"] = EXIT_FAILURE;
+                              $resultado["mensaje"] = "No se puede eliminar un cliente con pedidos asociados";
+                        } else {
+                              //sino si
+                              $cliente = new Cliente();
+                              $cliente->idcliente = $idCliente;
+                              $cliente->eliminar();
+                              $resultado["err"] = EXIT_SUCCESS;
+                              $resultado["mensaje"] = "Registro eliminado exitosamente.";
+                        }
+                  }
+            } else {
+                  $resultado["err"] = EXIT_FAILURE;
+                  $resultado["mensaje"] = "Usuario no autenticado";
+            }
+            return json_encode($resultado);
+      }
 }

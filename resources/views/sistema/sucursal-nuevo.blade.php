@@ -30,6 +30,7 @@ function fsalir(){
 @section('contenido')
 <?php
 if (isset($msg)) {
+    echo '<div id = "msg"></div>';
     echo '<script>msgShow("' . $msg["MSG"] . '", "' . $msg["ESTADO"] . '")</script>';
 }
 ?>

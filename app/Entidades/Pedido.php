@@ -158,6 +158,32 @@ class Pedido extends Model
         $lstRetorno = DB::select($sql);
         return(count($lstRetorno) > 0);
     }
+
+    public function existePedidosPorProducto($idProducto)
+    {
+        $sql = "SELECT
+                  idpedidoproducto,
+                  fk_idproducto,
+                  fk_idpedido
+                FROM pedidos_productos WHERE fk_idproducto = $idProducto";
+                $lstRetorno = DB::select($sql);
+                return(count($lstRetorno) > 0);
+    }
+
+    public function existePedidosParaSucursal($idSucursal)
+    {
+        $sql = "SELECT
+                  idpedido,
+                  fk_idcliente,
+                  fk_idsucursal,
+                  fk_idestadopedido,
+                  fecha,
+                  total
+                FROM pedidos WHERE fk_idsucursal = $idSucursal";
+        $lstRetorno = DB::select($sql);
+        return(count($lstRetorno) > 0);
+    }
+   
     
 }
 

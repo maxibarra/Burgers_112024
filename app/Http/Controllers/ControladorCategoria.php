@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Entidades\Producto;
 use Illuminate\Http\Request;
 use App\Entidades\Tipo_Producto;
+use App\Entidades\Sistema\Usuario;
+use App\Entidades\Sistema\Patente;
 use App\Entidades\Rubro;
 require app_path() . '/start/constants.php';
 
@@ -12,13 +14,35 @@ class ControladorCategoria extends Controller{
 
       public function nuevo(){
             $titulo = "Nueva Categoría";
-            $categoria = new Tipo_Producto();
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("CATEGORIAALTA")) {
+                        $codigo = "CATEGORIAALTA";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        $categoria = new Tipo_Producto();
             return view("sistema.categoria-nuevo",compact("titulo","categoria"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
+            
       }
 
       public function index(){
             $titulo = "Listado de Categorias";
-            return view("sistema.categoria-listar",compact("titulo"));
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("CATEGORIACONSULTA")) {
+                        $codigo = "CATEGORIACONSULTA";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        return view("sistema.categoria-listar",compact("titulo"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
+           
       }
 
 
@@ -94,27 +118,50 @@ class ControladorCategoria extends Controller{
 
       public function editar($idCategoria){
             $titulo = "Edición de categoria";
-            $categoria = new Tipo_Producto();
-            $categoria->obtenerPorId($idCategoria);
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("CATEGORIAEDITAR")) {
+                        $codigo = "CATEGORIAEDITAR";
+                        $mensaje = "No tiene permisos para la operación.";
+                        return view('sistema.pagina-error', compact('titulo', 'codigo', 'mensaje'));
+                  } else {
+                        $categoria = new Tipo_Producto();
+                        $categoria->obtenerPorId($idCategoria);  
+                        return view("sistema.categoria-nuevo", compact("titulo","categoria"));
+                  }
+            } else {
+                  return redirect('admin/login');
+            }
             
-            return view("sistema.categoria-nuevo", compact("titulo","categoria"));
       }
 
-      public function eliminar(Request $request){
-            $idCategoria = $request->input("id");
-            $producto = new Producto();
-            //Si el cliente tiene un pedido asociado no se tiene que poder eliminar
-            if($producto->existeProductosConCate($idCategoria)){
+      public function eliminar(Request $request)
+      {
+
+            if (Usuario::autenticado() == true) {
+                  if (!Patente::autorizarOperacion("CATEGORIAELIMINAR")) {
+                        $resultado["err"] = EXIT_FAILURE;
+                        $resultado["mensaje"] = "No tiene permisos para la operación";
+                  } else {
+                        $idCategoria = $request->input("id");
+                        $producto = new Producto();
+                        //Si el cliente tiene un pedido asociado no se tiene que poder eliminar
+                        if($producto->existeProductosConCate($idCategoria)){
+                              $resultado["err"] = EXIT_FAILURE;
+                              $resultado["mensaje"] = "No se puede eliminar una categoria con productos asociados";
+                        }else{
+                              //sino si
+                              $categoria = new Tipo_Producto();
+                              $categoria->idtipoproducto = $idCategoria;
+                              $categoria->eliminar();
+                              $resultado["err"] = EXIT_SUCCESS;
+                              $resultado["mensaje"] = "Registro eliminado exitosamente.";
+                        }
+                  }                
+            } else {
                   $resultado["err"] = EXIT_FAILURE;
-                  $resultado["mensaje"] = "No se puede eliminar una categoria con productos asociados";
-            }else{
-                  //sino si
-                  $categoria = new Tipo_Producto();
-                  $categoria->idcategoria = $idCategoria;
-                  $categoria->eliminar();
-                  $resultado["err"] = EXIT_SUCCESS;
-                  $resultado["mensaje"] = "Registro eliminado exitosamente.";
+                  $resultado["mensaje"] = "Usuario no autenticado";
             }
             return json_encode($resultado);
-          }
+
+      }
 }
