@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Entidades\Tipo_Producto;
 use App\Entidades\Sistema\Usuario;
 use App\Entidades\Sistema\Patente;
-use App\Entidades\Rubro;
+
 require app_path() . '/start/constants.php';
 
 class ControladorCategoria extends Controller{
