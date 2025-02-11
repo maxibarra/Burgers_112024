@@ -7,7 +7,7 @@
 @endsection
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/home">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="/admin/postulacion/nuevo">Inicio</a></li>
     <li class="breadcrumb-item active">Postulaciones</a></li>
 </ol>
 <ol class="toolbar">
@@ -32,17 +32,19 @@ if (isset($msg)) {
             <th>Link Cv</th>
         </tr>
     </thead>
-</table> 
+</table>
 <script>
-	var dataTable = $('#grilla').DataTable({
-	    "processing": true,
+    var dataTable = $('#grilla').DataTable({
+        "processing": true,
         "serverSide": true,
-	    "bFilter": true,
-	    "bInfo": true,
-	    "bSearchable": true,
+        "bFilter": true,
+        "bInfo": true,
+        "bSearchable": true,
         "pageLength": 25,
-        "order": [[ 0, "asc" ]],
-	    "ajax": "{{ route('postulacion.cargarGrilla') }}"
-	});
+        "order": [
+            [0, "asc"]
+        ],
+        "ajax": "{{ route('postulacion.cargarGrilla') }}"
+    });
 </script>
 @endsection

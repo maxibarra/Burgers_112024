@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Entidades\Sucursal;
 
-class ControladorWebHome extends Controller
+
+class ControladorWebPostulacionGracias extends Controller
 {
     public function index()
     {
         $sucursal = new Sucursal();
         $aSucursales = $sucursal->obtenerTodos();
-            return view('web.index', compact("aSucursales"));
+            return view('web.postulacion-gracias',compact("aSucursales"));
     }
 }

@@ -1,65 +1,39 @@
 @extends("web.plantilla")
 @section("contenido")
-  <!-- book section -->
-  <section class="book_section layout_padding">
-    <div class="container">
-      <div class="heading_container">
-        <h2>
-          Book A Table
-        </h2>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form_container">
-            <form action="">
-              <div>
-                <input type="text" class="form-control" placeholder="Your Name" />
-              </div>
-              <div>
-                <input type="text" class="form-control" placeholder="Phone Number" />
-              </div>
-              <div>
-                <input type="email" class="form-control" placeholder="Your Email" />
-              </div>
-              <div>
-                <select class="form-control nice-select wide">
-                  <option value="" disabled selected>
-                    How many persons?
-                  </option>
-                  <option value="">
-                    2
-                  </option>
-                  <option value="">
-                    3
-                  </option>
-                  <option value="">
-                    4
-                  </option>
-                  <option value="">
-                    5
-                  </option>
-                </select>
-              </div>
-              <div>
-                <input type="date" class="form-control">
-              </div>
-              <div class="btn_box">
-                <button>
-                  Book Now
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="map_container ">
-            <div id="googleMap"></div>
-          </div>
+<!-- book section -->
+<section class="book_section layout_padding">
+  <div class="container">
+    <div class=" card card-header">
+      <h2 class="text-center">
+        Contactanos!
+      </h2>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="form_container contact-form">
+          <form action="" method="POST">
+            <div class="form-group mt-3">
+              <input type="text" id="txtUsuario" name="txtUsuario" class="form-control" placeholder="Nombre" />
+            </div>
+            <div class="form-group">
+              <input type="email" id="txtCorreo" name="txtCorreo" class="form-control" placeholder="Correo" />
+            </div>
+            <div class="form-group ">
+              <input type="text" id="txtAsunto" name="txtAsunto" class="form-control" placeholder="Asunto" />
+            </div>
+            <div class="form-group ">
+              <textarea type="" id="txtMensaje" name="txtMensaje" class="form-control w-100  h-25" placeholder="Mensaje"></textarea>
+            </div>
+            <div class="btn_box text-center">
+              <button type="submit">
+                Enviar Mensaje
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </section>
-  <!-- end book section -->
-
+  </div>
+</section>
+<!-- end book section -->
 @endsection
- 

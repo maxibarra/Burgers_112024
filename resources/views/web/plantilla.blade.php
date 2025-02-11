@@ -13,7 +13,7 @@
   <meta name="author" content="" />
   <link rel="shortcut icon" href="web/images/favicon.png" type="">
 
-  <title> Feane </title>
+  <title> Burgers SRL </title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="web/css/bootstrap.css" />
@@ -23,7 +23,9 @@
   <!-- nice select  -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
   <!-- font awesome style -->
-  <link href="web/css/font-awesome.min.css" rel="stylesheet" />
+  <!-- <link href="web/css/font-awesome.min.css" rel="stylesheet" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 
   <!-- Custom styles for this template -->
   <link href="web/css/style.css" rel="stylesheet" />
@@ -44,7 +46,7 @@
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="/">
             <span>
-              Feane
+              Burgers SRL
             </span>
           </a>
 
@@ -54,17 +56,17 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  mx-auto ">
-              <li class="nav-item">
-                <a class="nav-link" href="/">Inicio </a>
+              <li class="nav-item <?php echo (Request::path() == "/") ? "active" : "" ?> ">
+                <a class="nav-link" href="/">Inicio<span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php echo (Request::path() == "takeaway") ? "active" : "" ?>">
                 <a class="nav-link" href="/takeaway">TakeAway</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php echo (Request::path() == "nosotros") ? "active" : "" ?>">
                 <a class="nav-link" href="/nosotros">Nosotros</a>
               </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="/contacto">Contacto</a>
+              <li class="nav-item <?php echo (Request::path() == "contacto") ? "active" : "" ?>">
+                <a class="nav-link" href="/contacto">Contacto </a>
               </li>
             </ul>
             <div class="user_option">
@@ -125,9 +127,15 @@
                   </g>
                 </svg>
               </a>
-              <a href="" class="order_online">
+              @if(Session::get("idCliente") && Session::get("idCliente")>0)
+              <a href="/logout" class="order_online">
+                Cerrar sesión
+              </a>
+              @else
+              <a href="/login" class="order_online">
                 Ingresar
               </a>
+              @endif
             </div>
           </div>
         </nav>
@@ -141,83 +149,87 @@
 
   <!-- footer section -->
   <footer class="footer_section">
-    <div class="container">
+    <div class=" container">
       <div class="row">
+
         <div class="col-md-4 footer-col">
           <div class="footer_contact">
             <h4>
-              Contact Us
+              Sucursales
             </h4>
             <div class="contact_link_box">
               <a href="">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                 <span>
-                  Location
+                  Ubicación
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <span>
+
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-clock" aria-hidden="true"></i>
+                <span>
+
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 footer-col">
+          <div class="footer_contact">
+            <h4>
+              BURGERS SRL
+            </h4>
+            <p>Seguinos en nuestras redes</p>
+            <div class="contact_link_box">
+              <a href="https://instagram.com">
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+              </a>
+              <a href="https://facebook.com">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 footer-col">
+          <div class="footer_contact">
+            <h4>
+              Nuestros horarios
+            </h4>
+            <div class="contact_link_box">
+              <a href="">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span>
+                  Ubicación
                 </span>
               </a>
               <a href="">
                 <i class="fa fa-phone" aria-hidden="true"></i>
                 <span>
-                  Call +01 1234567890
+
                 </span>
               </a>
               <a href="">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <i class="fa fa-clock" aria-hidden="true"></i>
                 <span>
-                  demo@gmail.com
                 </span>
               </a>
             </div>
           </div>
         </div>
-        <div class="col-md-4 footer-col">
-          <div class="footer_detail">
-            <a href="" class="footer-logo">
-              Feane
-            </a>
-            <p>
-              Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
-            </p>
-            <div class="footer_social">
-              <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-linkedin" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-pinterest" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 footer-col">
-          <h4>
-            Opening Hours
-          </h4>
+        <div class="col-12 footer-info">
           <p>
-            Everyday
-          </p>
-          <p>
-            10.00 Am -10.00 Pm
+            &copy; <span id="displayYear"></span> All Rights Reserved By
+            <a href="https://html.design/" target="_blank">DePc Suite</a>
           </p>
         </div>
       </div>
-      <div class="footer-info">
-        <p>
-          &copy; <span id="displayYear"></span> All Rights Reserved By
-          <a href="https://html.design/">Free Html Templates</a><br><br>
-          &copy; <span id="displayYear"></span> Distributed By
-          <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-        </p>
-      </div>
-    </div>
   </footer>
   <!-- footer section -->
 

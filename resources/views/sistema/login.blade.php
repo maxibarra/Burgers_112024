@@ -49,7 +49,7 @@
             <button class="btn btn-primary btn-block" type="submit">Entrar</button>
           </form><br>
           <div class="text-center">
-            <a class="d-block small" href="/admin/recupero-clave">Recuperar clave</a>
+            <a class="d-block small" href="/recupero-clave">Recuperar clave</a>
           </div>
         </div>
       </div>

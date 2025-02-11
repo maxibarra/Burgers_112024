@@ -29,18 +29,22 @@ class Producto extends Model
             $this->precio = $request->input('txtPrecio');
             $this->cantidad = $request->input('txtCantidad');
             $this->fk_idtipoproducto = $request->input('lstTipoProducto');
+            $this->imagen = $request->input('archivo');
         }
       public function obtenerTodos()
       {
             $sql = "SELECT
-                  idproducto,
-                  nombre,  
-                  descripcion,
-                  precio,
-                  cantidad,
-                  imagen,
-                  fk_idtipoproducto
-                FROM productos ORDER BY nombre";
+                  A.idproducto,
+                  A.nombre,  
+                  A.descripcion,
+                  A.precio,
+                  A.cantidad,
+                  A.imagen,
+                  A.fk_idtipoproducto,
+                  B.nombre AS tipoProducto
+                FROM productos A 
+                INNER JOIN tipo_productos b ON A.fk_idtipoproducto = B.idtipoproducto
+                ORDER BY nombre";
             $lstRetorno = DB::select($sql);
             return $lstRetorno;
       }
@@ -78,7 +82,7 @@ class Producto extends Model
           descripcion='$this->descripcion',
           precio=$this->precio,
           cantidad=$this->cantidad,
-        imagen='$this->imagen',
+          imagen= '$this->imagen',
           fk_idtipoproducto=$this->fk_idtipoproducto
           WHERE idproducto=?";
             $affected = DB::update($sql, [$this->idproducto]);
@@ -146,7 +150,6 @@ class Producto extends Model
             $sql .= " OR imagen LIKE '%" . $request['search']['value'] . "%' )";
             $sql .= " OR b.nombre LIKE '%" . $request['search']['value'] . "%' )";
         }
-        $sql .= " ORDER BY " . $columns[$request['order'][0]['column']] . "   " . $request['order'][0]['dir'];
 
         $lstRetorno = DB::select($sql);
 

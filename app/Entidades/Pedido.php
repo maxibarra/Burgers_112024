@@ -11,14 +11,18 @@ class Pedido extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'idpedido', 'fk_idcliente', 'fk_idsucursal', 'fk_idestadopedido', 'fecha', 'total'
+        'idpedido',
+        'fk_idcliente',
+        'fk_idsucursal',
+        'fk_idestadopedido',
+        'fecha',
+        'total'
     ];
 
-    protected $hidden = [
+    protected $hidden = [];
 
-    ];
-
-    public function cargarDesdeRequest($request) {
+    public function cargarDesdeRequest($request)
+    {
         $this->idpedido = $request->input('id') != "0" ? $request->input('id') : $this->idpedido;
         $this->fk_idcliente = $request->input('lstCliente');
         $this->fk_idsucursal = $request->input('lstSucursal');
@@ -65,8 +69,9 @@ class Pedido extends Model
         return null;
     }
 
-    public function guardar() {
-      $sql = "UPDATE pedidos SET
+    public function guardar()
+    {
+        $sql = "UPDATE pedidos SET
           fk_idcliente=$this->fk_idcliente,
           fk_idsucursal=$this->fk_idsucursal,
           fk_idestadopedido=$this->fk_idestadopedido,
@@ -74,10 +79,10 @@ class Pedido extends Model
           total=$this->total
           
           WHERE idpedido=?";
-      $affected = DB::update($sql, [$this->idpedido]);
-  }
+        $affected = DB::update($sql, [$this->idpedido]);
+    }
 
-  public function eliminar()
+    public function eliminar()
     {
         $sql = "DELETE FROM pedidos WHERE
             idpedido=?";
@@ -156,7 +161,7 @@ class Pedido extends Model
                   total
                 FROM pedidos WHERE fk_idcliente = $idCliente";
         $lstRetorno = DB::select($sql);
-        return(count($lstRetorno) > 0);
+        return (count($lstRetorno) > 0);
     }
 
     public function existePedidosPorProducto($idProducto)
@@ -166,8 +171,8 @@ class Pedido extends Model
                   fk_idproducto,
                   fk_idpedido
                 FROM pedidos_productos WHERE fk_idproducto = $idProducto";
-                $lstRetorno = DB::select($sql);
-                return(count($lstRetorno) > 0);
+        $lstRetorno = DB::select($sql);
+        return (count($lstRetorno) > 0);
     }
 
     public function existePedidosParaSucursal($idSucursal)
@@ -181,10 +186,6 @@ class Pedido extends Model
                   total
                 FROM pedidos WHERE fk_idsucursal = $idSucursal";
         $lstRetorno = DB::select($sql);
-        return(count($lstRetorno) > 0);
+        return (count($lstRetorno) > 0);
     }
-   
-    
 }
-
-?>

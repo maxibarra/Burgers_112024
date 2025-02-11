@@ -10,14 +10,14 @@
             <div class="col-md-7 col-lg-6 ">
               <div class="detail-box">
                 <h1>
-                  Fast Food Restaurant
+                ¡Combos Explosivos!
                 </h1>
                 <p>
-                  Doloremque, itaque aperiam facilis rerum, commodi, temporibus sapiente ad mollitia laborum quam quisquam esse error unde. Tempora ex doloremque, labore, sunt repellat dolore, iste magni quos nihil ducimus libero ipsam.
+                Disfruta de nuestra Hamburguesa Doble + Papas + Bebida por solo $7.99. ¡Sabor que hace explosión en cada bocado!
                 </p>
                 <div class="btn-box">
-                  <a href="" class="btn1">
-                    Order Now
+                  <a href="/takeaway" class="btn1">
+                  ¡Quiero mi combo!
                   </a>
                 </div>
               </div>
@@ -31,14 +31,14 @@
             <div class="col-md-7 col-lg-6 ">
               <div class="detail-box">
                 <h1>
-                  Fast Food Restaurant
+                La Clásica XXL 
                 </h1>
                 <p>
-                  Doloremque, itaque aperiam facilis rerum, commodi, temporibus sapiente ad mollitia laborum quam quisquam esse error unde. Tempora ex doloremque, labore, sunt repellat dolore, iste magni quos nihil ducimus libero ipsam.
+                Carne 100% res a la parrilla, queso cheddar derretido, tocino crujiente y pan brioche. ¡La receta que nos hizo famosos!
                 </p>
                 <div class="btn-box">
-                  <a href="" class="btn1">
-                    Order Now
+                  <a href="/takeaway" class="btn1">
+                  ¡La quiero ya!
                   </a>
                 </div>
               </div>
@@ -52,14 +52,14 @@
             <div class="col-md-7 col-lg-6 ">
               <div class="detail-box">
                 <h1>
-                  Fast Food Restaurant
+                La Burger del Mes
                 </h1>
                 <p>
-                  Doloremque, itaque aperiam facilis rerum, commodi, temporibus sapiente ad mollitia laborum quam quisquam esse error unde. Tempora ex doloremque, labore, sunt repellat dolore, iste magni quos nihil ducimus libero ipsam.
+                Descubre nuestra edición especial Trufa & Hongos: un lujo para paladares exigentes. ¡Solo en Febrero!
                 </p>
                 <div class="btn-box">
-                  <a href="" class="btn1">
-                    Order Now
+                  <a href="/takeaway" class="btn1">
+                  Ver detalles
                   </a>
                 </div>
               </div>

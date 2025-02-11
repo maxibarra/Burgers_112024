@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Entidades\Producto;
 use App\Entidades\Tipo_Producto;
@@ -56,24 +55,49 @@ class ControladorProducto extends Controller
                   $entidad = new Producto();
                   $entidad->cargarDesdeRequest($request);
 
+                  $esActualizacion = isset($_POST["id"]) && $_POST["id"] > 0;
+                  $productAnt = null;
+
+                  // Cargar producto existente si es actualización
+                  if ($esActualizacion) {
+                        $productAnt = new Producto();
+                        $productAnt->obtenerPorId($_POST["id"]); // Usar el ID del POST
+
+                        // Asignar imagen existente si no se sube nueva
+                        if (!isset($_FILES["archivo"]) || $_FILES["archivo"]["error"] !== UPLOAD_ERR_OK) {
+                              $entidad->imagen = $productAnt->imagen;
+                        }
+                  }
+                  
+                  //Procesa nueva imagen si se sube
+                  if ($_FILES["archivo"]["error"] === UPLOAD_ERR_OK) { //Se adjunta imagen
+                        $extension = pathinfo($_FILES["archivo"]["name"], PATHINFO_EXTENSION);
+                        $nombre = date("Ymdhmsi") . ".$extension";
+                        $archivo = $_FILES["archivo"]["tmp_name"];
+                        move_uploaded_file($archivo, env('APP_PATH') . "/public/files/$nombre"); 
+                        //guardaelarchivo
+                        $entidad->imagen = $nombre;
+
+                        // Eliminar imagen anterior si es actualización
+                        if ($esActualizacion && $productAnt && $productAnt->imagen) {
+                              @unlink(env('APP_PATH') . "/public/files/$productAnt->imagen");
+                        }
+                  }
+                  
                   //validaciones
-                  if ($entidad->nombre == "" || $entidad->descripcion == "" || $entidad->precio == "" || $entidad->cantidad == "" || $entidad->fk_idtipoproducto == "") {
+                  if ($entidad->nombre == "" || $entidad->descripcion == "" || $entidad->precio == "" || $entidad->cantidad == "" || $entidad->fk_idtipoproducto =="" || $entidad->imagen == "") {
                         $msg["ESTADO"] = MSG_ERROR;
                         $msg["MSG"] = "Complete todos los datos";
                   } else {
-                        if ($_POST["id"] > 0) {
-                              //Es actualizacion
+                        if ($esActualizacion) {
+                              $entidad->idproducto = $_POST["id"]; // Asegurar que el ID esté asignado
                               $entidad->guardar();
-
-                              $msg["ESTADO"] = MSG_SUCCESS;
-                              $msg["MSG"] = OKINSERT;
                         } else {
-                              //Es nuevo
                               $entidad->insertar();
-
-                              $msg["ESTADO"] = MSG_SUCCESS;
-                              $msg["MSG"] = OKINSERT;
                         }
+
+                        $msg["ESTADO"] = MSG_SUCCESS;
+                        $msg["MSG"] = OKINSERT;
 
                         $_POST["id"] = $entidad->idproducto;
                         return view('sistema.producto-listar', compact('titulo', 'msg'));
@@ -83,7 +107,7 @@ class ControladorProducto extends Controller
                   $msg["MSG"] = ERRORINSERT;
             }
 
-            $id = $entidad->idproducto;
+            $id = $esActualizacion ? $_POST["id"] : ($entidad->idproducto ?? 0);
             $producto = new Producto();
             $producto->obtenerPorId($id);
             $categoria = new Tipo_Producto();
@@ -112,8 +136,7 @@ class ControladorProducto extends Controller
                   $row[] = $aProductos[$i]->cantidad;
                   $row[] = $aProductos[$i]->descripcion;
                   $row[] = $aProductos[$i]->tipoProducto;
-                  $row[] = $aProductos[$i]->imagen;
-
+                  $row[] = "<img class='img-thumbnail' src='/files/".$aProductos[$i]->imagen."'>";
                   $cont++;
                   $data[] = $row;
             }

@@ -28,7 +28,7 @@ class Cliente extends Model
         $this->direccion = $request->input('txtDireccion');
         $this->dni = $request->input('txtDni');
         $this->correo = $request->input('txtCorreo');
-        $this->clave = $request->input('txtClave');
+        $this->clave = password_hash($request->input('txtClave'), PASSWORD_DEFAULT);
     }
 
     public function obtenerTodos()
@@ -74,6 +74,33 @@ class Cliente extends Model
         }
         return null;
     }
+    public function obtenerPorCorreo($correo) 
+    {
+        $sql = "SELECT
+                  idcliente,
+                  nombre,
+                  apellido,
+                  correo,
+                  dni,
+                  celular,
+                  clave,
+                  direccion
+                FROM clientes WHERE correo ='$correo'";
+        $lstRetorno = DB::select($sql);
+
+        if (count($lstRetorno) > 0) {
+            $this->idcliente = $lstRetorno[0]->idcliente;
+            $this->nombre = $lstRetorno[0]->nombre;
+            $this->apellido = $lstRetorno[0]->apellido;
+            $this->correo = $lstRetorno[0]->correo;
+            $this->dni = $lstRetorno[0]->dni;
+            $this->celular = $lstRetorno[0]->celular;
+            $this->direccion = $lstRetorno[0]->direccion;
+            $this->clave = $lstRetorno[0]->clave;
+            return $this;
+        }
+        return null;
+    }
 
   
 
@@ -84,8 +111,8 @@ class Cliente extends Model
           correo='$this->correo',
           dni=$this->dni,
           celular=$this->celular,
-          direccion='$this->direccion',
-          clave=$this->clave
+          clave='$this->clave',
+          direccion='$this->direccion'
           WHERE idcliente= ?";
       $affected = DB::update($sql, [$this->idcliente]);
   }
@@ -115,7 +142,7 @@ class Cliente extends Model
             $this->dni,
             $this->celular,
             $this->clave,
-            $this->direccion,
+            $this->direccion
         ]);
         return $this->idcliente = DB::getPdo()->lastInsertId();
     }

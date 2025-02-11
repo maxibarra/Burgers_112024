@@ -246,7 +246,30 @@ a:focus {
   transition: all 0.3s;
   border: none;
 }
+.box .btn{
+  display: inline-block;
+  padding: 15px 20px;
+  background-color: #ffbe33;
+  color: #ffffff;
+  border-radius: 50px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  border: none;
+}
 
+.box .btn:hover{
+  background-color: #e69c00;
+}
+.box .form-group {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 15px; 
+    align-items: center; 
+}
+
+.box .form-control {
+    width: 50px;
+}
 .user_option .order_online:hover {
   background-color: #e69c00;
 }
@@ -559,7 +582,7 @@ a:focus {
   display: flex;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
-          justify-content: space-between;
+          justify-content: space-evenly;
 }
 
 .food_section .box .options a {
@@ -904,6 +927,7 @@ a:focus {
   color: #ffffff;
   padding: 75px 0 40px 0;
   text-align: center;
+  
 }
 
 .footer_section h4 {
@@ -915,6 +939,7 @@ a:focus {
   font-weight: 600;
   margin-bottom: 20px;
   font-family: 'Dancing Script', cursive;
+
 }
 
 .footer_section p {
@@ -922,13 +947,13 @@ a:focus {
 }
 
 .footer_section .footer-col {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .footer_section .footer_contact .contact_link_box {
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex;
+  display: inline-block;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -938,6 +963,7 @@ a:focus {
 .footer_section .footer_contact .contact_link_box a {
   margin: 5px 0;
   color: #ffffff;
+  font-size:30px;
 }
 
 .footer_section .footer_contact .contact_link_box a i {
@@ -993,15 +1019,18 @@ a:focus {
 
 .footer_section .footer-info {
   text-align: center;
-  margin-top: 25px;
+  margin-top: auto;
+
 }
 
 .footer_section .footer-info p {
   color: #ffffff;
   margin: 0;
+
 }
 
 .footer_section .footer-info p a {
   color: inherit;
 }
+
 /*# sourceMappingURL=style.css.map */

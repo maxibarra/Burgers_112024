@@ -1,4 +1,8 @@
 {
-        "editor.fontSize": 18,
-        "editor.tabSize": 6
+        "editor.fontSize": 16,
+        "editor.tabSize": 6,
+        "editor.formatOnPaste": true,
+        "editor.fontLigatures": true,
+        "diffEditor.hideUnchangedRegions.contextLineCount": 2,
+        "diffEditor.hideUnchangedRegions.minimumLineCount": 2
 }

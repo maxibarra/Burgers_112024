@@ -27,7 +27,7 @@ class Postulacion extends Model
             $this->apellido = $request->input('txtApellido');
             $this->whatsapp = $request->input('txtWhatsapp');
             $this->correo = $request->input('txtCorreo');
-            $this->linkcv = $request->input('txtCV');
+            $this->linkcv = $request->input('archivo');
         }
       public function obtenerTodos()
       {
@@ -88,7 +88,7 @@ class Postulacion extends Model
 
     public function insertar()
     {
-        $sql = "INSERT INTO postulaciones (
+        $sql = "INSERT INTO postulaciones(
                   nombre,
                   apellido,
                   whatsapp,
@@ -101,7 +101,6 @@ class Postulacion extends Model
             $this->whatsapp,
             $this->correo,
             $this->linkcv
-           
         ]);
         return $this->idpostulacion = DB::getPdo()->lastInsertId();
     }
