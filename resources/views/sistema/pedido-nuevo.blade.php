@@ -33,7 +33,7 @@ if (isset($msg)) {
       echo '<script>msgShow("' . $msg["MSG"] . '", "' . $msg["ESTADO"] . '")</script>';
 }
 ?>
-<div id = "msg"></div>
+<div id="msg"></div>
 <div class="panel-body">
       <form id="form1" method="POST">
             <div class="row">
@@ -41,13 +41,13 @@ if (isset($msg)) {
                   <input type="hidden" id="id" name="id" class="form-control" value="{{$globalId}}" required>
                   <div class="form-group col-6">
                         <label>Cliente: *</label>
-                        <select id="lstCliente" name="lstCliente" class="form-control"  required>
+                        <select id="lstCliente" name="lstCliente" class="form-control" required>
                               <option value="" disabled selected>Seleccionar</option>
                               @foreach($aClientes as $cliente)
-                                    <option value="{{ $cliente->idcliente }}" 
-                                          {{ isset($pedido->fk_idcliente) && $pedido->fk_idcliente == $cliente->idcliente ? 'selected' : '' }}>
-                                          {{ $cliente->nombre }}
-                                    </option>
+                              <option value="{{ $cliente->idcliente }}"
+                                    {{ isset($pedido->fk_idcliente) && $pedido->fk_idcliente == $cliente->idcliente ? 'selected' : '' }}>
+                                    {{ $cliente->nombre }}
+                              </option>
                               @endforeach
                         </select>
                   </div>
@@ -56,11 +56,19 @@ if (isset($msg)) {
                         <select id="lstSucursal" name="lstSucursal" class="form-control" required>
                               <option value="" disabled selected>Seleccionar</option>
                               @foreach($aSucursales as $sucursal)
-                                    <option value="{{ $sucursal->idsucursal }}" 
-                                          {{ isset($pedido->fk_idsucursal) && $pedido->fk_idsucursal == $sucursal->idsucursal ? 'selected' : '' }}>
-                                          {{ $sucursal->nombre }}
-                                    </option>
+                              <option value="{{ $sucursal->idsucursal }}"
+                                    {{ isset($pedido->fk_idsucursal) && $pedido->fk_idsucursal == $sucursal->idsucursal ? 'selected' : '' }}>
+                                    {{ $sucursal->nombre }}
+                              </option>
                               @endforeach
+                        </select>
+                  </div>
+                  <div class="form-group col-6">
+                        <label>Medio de Pago: *</label>
+                        <select id="lstPago" name="lstPago" class="form-control" required>
+                              <option value="" disabled selected>Seleccionar</option>
+                              <option <?php echo $pedido->pago == "MercadoPago" ? "selected" : ""; ?> value="MercadoPago">Mercado Pago</option>
+                              <option <?php echo $pedido->pago == "Efectivo" ? "selected" : ""; ?> value="Efectivo">Efectivo</option>
                         </select>
                   </div>
                   <div class="form-group col-6">
@@ -68,14 +76,14 @@ if (isset($msg)) {
                         <select id="lstEstadoPedido" name="lstEstadoPedido" class="form-control" required>
                               <option value="" disabled selected>Seleccionar</option>
                               @foreach($aEstadoPedidos as $estadoPedido)
-                                    <option value="{{ $estadoPedido->idestadopedido }}" 
-                                          {{ isset($pedido->fk_idestadopedido) && $pedido->fk_idestadopedido == $estadoPedido->idestadopedido ? 'selected' : '' }}>
-                                          {{ $estadoPedido->nombre }}
-                                    </option>
+                              <option value="{{ $estadoPedido->idestadopedido }}"
+                                    {{ isset($pedido->fk_idestadopedido) && $pedido->fk_idestadopedido == $estadoPedido->idestadopedido ? 'selected' : '' }}>
+                                    {{ $estadoPedido->nombre }}
+                              </option>
                               @endforeach
                         </select>
                   </div>
-                
+
                   <div class="form-group col-6">
                         <label>Fecha: *</label>
                         <input type="date" id="txtFecha" name="txtFecha" class="form-control" value="{{$pedido->fecha}}" required>
@@ -85,6 +93,30 @@ if (isset($msg)) {
                         <input type="text" id="txtTotal" name="txtTotal" class="form-control" value="{{$pedido->total}}" required>
                   </div>
             </div>
+
+            <div class="row">
+                  @if($pedido->idpedido > 0)
+                  <div class="col-12">
+                        <h3>Listado de Productos</h3>
+                  </div>
+                  <div class="col-12">
+                        <table class="table table-hover border">
+                              <tr>
+                                    <th>Imagen</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                              </tr>
+                              @foreach($aPedidoProductos as $producto)
+                              <tr>
+                                    <td><img src="/files/{{ $producto->imagen }}" class="img-thumbnail" style="width:90px;"></td>
+                                    <td>{{ $producto->nombre }}</td>
+                                    <td>{{ $producto->cantidad }}</td>
+                              </tr>
+                              @endforeach
+                        </table>
+                  </div>
+            </div>
+            @endif
       </form>
 </div>
 <script>
@@ -102,24 +134,26 @@ if (isset($msg)) {
       }
 
       function eliminar() {
-        $.ajax({
-            type: "GET",
-            url: "{{asset('/admin/pedido/eliminar')}}",
-            data: { id:globalId },
-            async: true,
-            dataType: "json",
-            success: function (data) {
-                if (data.err == 0) {
-                    msgShow(data.mensaje, "success");
-                    $("#btnEnviar").hide();
-                    $("#btnEliminar").hide();
-                    $("#mdlEliminar").modal("toggle");
-                } else {
-                    msgShow(data.mensaje, "danger");
-                    $("#mdlEliminar").modal("toggle");
-                }
-            }
-        });
+            $.ajax({
+                  type: "GET",
+                  url: "{{asset('/admin/pedido/eliminar')}}",
+                  data: {
+                        id: globalId
+                  },
+                  async: true,
+                  dataType: "json",
+                  success: function(data) {
+                        if (data.err == 0) {
+                              msgShow(data.mensaje, "success");
+                              $("#btnEnviar").hide();
+                              $("#btnEliminar").hide();
+                              $("#mdlEliminar").modal("toggle");
+                        } else {
+                              msgShow(data.mensaje, "danger");
+                              $("#mdlEliminar").modal("toggle");
+                        }
+                  }
+            });
       }
 </script>
 @endsection

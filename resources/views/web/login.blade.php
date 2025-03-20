@@ -10,15 +10,12 @@
             <div class="row justify-content-center">
                   <div class="col-md-4">
                         <div class="form_container contact-form">
+
                               <form action="" method="POST">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                                    @if(isset($mensaje))
-                                    <div class="row">
-                                          <div class="col-md-12">
-                                                <div class="alert alert-danger mt-3" role="alert">
-                                                      {{$mensaje}}
-                                                </div>
-                                          </div>
+                                    @if(isset($msg) && ($msg))
+                                    <div class=" mt-4 alert alert-{{$msg["ESTADO"]}} text-center" role="alert">
+                                          {{ $msg["MSG"] }}
                                     </div>
                                     @endif
                                     <div class="form-group mt-2">

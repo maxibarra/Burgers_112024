@@ -9,14 +9,19 @@
             </div>
             <div class="row justify-content-center">
                   <div class="col-md-6">
+                        @if(isset($msg) && ($msg))
+                        <div class="alert alert-{{$msg["ESTADO"]}}" role="alert">
+                              {{ $msg["MSG"] }}
+                        </div>
+                        @endif
                         <div class="form_container">
                               <form action="" method="POST">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
                                     <div class="form-group">
-                                          <input type="password" id="txtClaveAnterior" name="txtClaveAnterior" class="form-control" placeholder="Clave nueva" />
+                                          <input type="password" id="txtClave1" name="txtClave1" class="form-control" placeholder="Clave nueva" />
                                     </div>
                                     <div class="form-group">
-                                          <input type="password" id="txtClaveNueva" name="txtClaveNueva" class="form-control" placeholder="Repetir Clave nueva" />
+                                          <input type="password" id="txtClave2" name="txtClave2" class="form-control" placeholder="Repetir Clave nueva" />
                                     </div>
                                     <div class="btn_box text-center">
                                           <button>

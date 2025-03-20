@@ -39,7 +39,7 @@ class ControladorWebRegistrarse extends Controller
             $cliente->insertar();
             $msg["ESTADO"] = MSG_SUCCESS;
             $msg["MSG"] = "Registro exitoso. Puede loguearse";
-            return view('web.registrarse', compact('titulo', 'msg', 'aSucursales'));
+            return view('web.login', compact('titulo', 'msg', 'aSucursales'));
             }
          
     }

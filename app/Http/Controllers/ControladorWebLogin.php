@@ -7,6 +7,7 @@ use App\Entidades\Cliente;
 use App\Entidades\Carrito;
 use Session;
 
+require app_path() . '/start/constants.php';
 
 class ControladorWebLogin extends Controller
 {
@@ -25,7 +26,6 @@ class ControladorWebLogin extends Controller
         $aSucursales = $sucursal->obtenerTodos();
         $correo = $request->input("txtCorreo");
         $clave = $request->input("txtClave");
-
         $cliente = new Cliente();
         $cliente->obtenerPorCorreo($correo);
         if($cliente->correo != ""){
@@ -34,8 +34,10 @@ class ControladorWebLogin extends Controller
                 return redirect('/');
             }
         }else{
-            $mensaje = 'Credenciales incorrectas';
-            return view('web.login', compact('aSucursales'));
+            $msg["ESTADO"] = MSG_ERROR;
+            $msg["MSG"] = "Credenciales incorrectas";
+            return view('web.login', compact('msg', 'aSucursales'));
+            
         }    
     }
 

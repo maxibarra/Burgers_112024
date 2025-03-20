@@ -21,9 +21,14 @@ class ControladorWebRecuperarClave extends Controller
         $titulo = "Recuperar Clave";
         $correo = $request->input('txtCorreo');
         $clave = rand(1000, 9999);
+        
+        $sucursal = new Sucursal();
+        $aSucursales = $sucursal->obtenerTodos();
 
         $cliente = new Cliente();
         $cliente->obtenerPorCorreo($correo);
+        
+
         if($cliente ->correo != ""){
             $claveEncriptada = password_hash($clave, PASSWORD_DEFAULT);
             
@@ -58,18 +63,19 @@ class ControladorWebRecuperarClave extends Controller
                 <strong>Cambia esta clave al iniciar sesión</strong>";
 
                 //$mail->send(); 
+                $cliente->clave = password_hash($clave,PASSWORD_DEFAULT);
+                $cliente->guardar();
+
                 $mensaje = "La nueva Clave es $clave y te la hemos enviado al correo";
 
-                return view('web.recuperar-clave', compact("titulo","mensaje"));
+                return view('web.recuperar-clave', compact("titulo","mensaje", "aSucursales"));
             } catch (Exception $e) {
                 $mensaje = "Hubo un error al enviar el correo. Por favor, intente nuevamente" . $mail->ErrorInfo;    
+                return view('web.recuperar-clave', compact("titulo", 'mensaje', "aSucursales"));
             }
-
-            return view('web.recuperar-clave', compact("titulo", 'mensaje'));
-
         }else{
             $mensaje = "El email ingresado no existe";
-            return view('web.recuperar-clave', compact("titulo","mensaje"));
+            return view('web.recuperar-clave', compact("titulo","mensaje", "aSucursales"));
         }
     }
 }

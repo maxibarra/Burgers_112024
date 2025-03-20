@@ -10,14 +10,14 @@
             <div class="col-md-7 col-lg-6 ">
               <div class="detail-box">
                 <h1>
-                ¡Combos Explosivos!
+                  ¡Combos Explosivos!
                 </h1>
                 <p>
-                Disfruta de nuestra Hamburguesa Doble + Papas + Bebida por solo $7.99. ¡Sabor que hace explosión en cada bocado!
+                  Disfruta de nuestra Hamburguesa Doble + Papas + Bebida por solo $7.99. ¡Sabor que hace explosión en cada bocado!
                 </p>
                 <div class="btn-box">
                   <a href="/takeaway" class="btn1">
-                  ¡Quiero mi combo!
+                    ¡Quiero mi combo!
                   </a>
                 </div>
               </div>
@@ -31,14 +31,14 @@
             <div class="col-md-7 col-lg-6 ">
               <div class="detail-box">
                 <h1>
-                La Clásica XXL 
+                  La Clásica XXL
                 </h1>
                 <p>
-                Carne 100% res a la parrilla, queso cheddar derretido, tocino crujiente y pan brioche. ¡La receta que nos hizo famosos!
+                  Carne 100% res a la parrilla, queso cheddar derretido, tocino crujiente y pan brioche. ¡La receta que nos hizo famosos!
                 </p>
                 <div class="btn-box">
                   <a href="/takeaway" class="btn1">
-                  ¡La quiero ya!
+                    ¡La quiero ya!
                   </a>
                 </div>
               </div>
@@ -52,14 +52,14 @@
             <div class="col-md-7 col-lg-6 ">
               <div class="detail-box">
                 <h1>
-                La Burger del Mes
+                  La Burger del Mes
                 </h1>
                 <p>
-                Descubre nuestra edición especial Trufa & Hongos: un lujo para paladares exigentes. ¡Solo en Febrero!
+                  Descubre nuestra edición especial Trufa & Hongos: un lujo para paladares exigentes. ¡Solo en Febrero!
                 </p>
                 <div class="btn-box">
                   <a href="/takeaway" class="btn1">
-                  Ver detalles
+                    Ver detalles
                   </a>
                 </div>
               </div>
@@ -100,7 +100,7 @@
               <h6>
                 <span>20%</span> Off
               </h6>
-              <a href="">
+              <a href="/takeaway">
                 Order Now <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>
@@ -169,7 +169,7 @@
               <h6>
                 <span>15%</span> Off
               </h6>
-              <a href="">
+              <a href="/takeaway">
                 Order Now <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>

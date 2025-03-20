@@ -6,6 +6,7 @@ use App\Entidades\Pedido;
 use App\Entidades\Cliente;
 use App\Entidades\Sucursal;
 use App\Entidades\Estado_pedido;
+use App\Entidades\Pedido_producto;
 use App\Entidades\Sistema\Usuario;
 use App\Entidades\Sistema\Patente;
 
@@ -113,7 +114,7 @@ class ControladorPedido extends Controller{
           
           for ($i = $inicio; $i < count($aPedidos) && $cont < $registros_por_pagina; $i++) {
               $row = array();
-              $row[] = date('d/m/Y',strtotime($aPedidos[$i]->fecha));
+              $row[] = date('Y-m-d',strtotime($aPedidos[$i]->fecha));
               $row[] = '<a href="/admin/pedido/' . $aPedidos[$i]->idpedido. '">' . $aPedidos[$i]->cliente . '</a>';
               $row[] = $aPedidos[$i]->sucursal;
               $row[] = $aPedidos[$i]->estadopedido;
@@ -147,7 +148,10 @@ class ControladorPedido extends Controller{
                         $aSucursales = $sucursal->obtenerTodos();
                         $estadoPedido = new Estado_pedido();
                         $aEstadoPedidos = $estadoPedido->obtenerTodos();
-                        return view("sistema.pedido-nuevo", compact("titulo","pedido","aClientes","aSucursales","aEstadoPedidos"));
+
+                        $entidadPedidoProducto = new Pedido_producto();
+                        $aPedidoProductos = $entidadPedidoProducto->obtenerPorPedido($idPedido);
+                        return view("sistema.pedido-nuevo", compact("titulo","pedido","aClientes","aSucursales","aEstadoPedidos", "aPedidoProductos"));
                   }
             } else {
                   return redirect('admin/login');
