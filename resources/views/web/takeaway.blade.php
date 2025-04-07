@@ -40,12 +40,12 @@
                 </p>
                 <div class="options">
                   <h6>
-                    $ {{ number_format($producto->precio , 0, ',', '.') }}
+                    $ {{ number_format($producto->precio , 2, ',', '.') }}
                   </h6>
                   <form action="" method="POST" class="form-group">
                     <!-- cantidad de productos que se desea agregar al carrito -->
                     <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                    <input type="text" id="txtProducto" name="txtProducto" class="form-control" style="width:60px;" value="{{$producto->idproducto}}" required>
+                    <input type="hidden" id="txtProducto" name="txtProducto" class="form-control" style="width:60px;" value="{{$producto->idproducto}}" required>
                     <input type="number" id="txtCantidad" name="txtCantidad" class="form-control" style="width:60px;" value="0" min="0" required>
                     <button type="submit" class="btn">
                       <i class="fa-solid fa-cart-shopping"></i>

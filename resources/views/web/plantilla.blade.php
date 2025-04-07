@@ -26,7 +26,6 @@
   <!-- <link href="web/css/font-awesome.min.css" rel="stylesheet" /> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-
   <!-- Custom styles for this template -->
   <link href="web/css/style.css" rel="stylesheet" />
   <!-- responsive style -->
@@ -147,92 +146,69 @@
 
   @yield("contenido")
 
-  <!-- footer section -->
+  <!-- Footer Section -->
   <footer class="footer_section">
-    <div class=" container">
+    <div class="container">
       <div class="row">
-
-        <div class="col-md-4 footer-col">
-          <div class="footer_contact">
-            <h4>
-              Sucursales
-            </h4>
-            <div class="contact_link_box">
-              <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span>
-                  Ubicación
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-                <span>
-
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-clock" aria-hidden="true"></i>
-                <span>
-
-                </span>
-              </a>
+        <div class="col-12 col-md-4 mb-4">
+          <h3 class="text-center">Nuestras sucursales</h3>
+          <div id="carouselSucursales" class="carousel slide" data-ride="carousel" data-interval="3000">
+            <div class="carousel-inner">
+              @foreach($aSucursales as $index => $sucursal)
+              <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                <div class="detail-box text-center">
+                  <h5>{{ $sucursal->nombre }}</h5>
+                  <p><strong>Dirección:</strong> {{ $sucursal->direccion }}</p>
+                  <p><strong>Horario:</strong> {{ $sucursal->horario }}</p>
+                  <p><strong>Telefono:</strong> {{ $sucursal->telefono }}</p>
+                </div>
+              </div>
+              @endforeach
             </div>
           </div>
         </div>
 
-        <div class="col-md-4 footer-col">
-          <div class="footer_contact">
-            <h4>
-              BURGERS SRL
-            </h4>
-            <p>Seguinos en nuestras redes</p>
-            <div class="contact_link_box">
-              <a href="https://instagram.com">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
-              <a href="https://facebook.com">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-              </a>
-            </div>
+        <div class="col-12 col-md-4 text-center mb-4 footer_contact">
+          <h1 class="footer-title">BURGERS SRL</h1>
+          <p>Seguinos en nuestras redes</p>
+          <div class=" contact_link_box">
+            <a href="https://instagram.com">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a href="https://facebook.com">
+              <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
           </div>
         </div>
 
-        <div class="col-md-4 footer-col">
-          <div class="footer_contact">
-            <h4>
-              Nuestros horarios
-            </h4>
-            <div class="contact_link_box">
-              <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span>
-                  Ubicación
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span>
-
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-clock" aria-hidden="true"></i>
-                <span>
-                </span>
-              </a>
+        <div class="col-12 col-md-4 ">
+          <h3 class="text-center">Nuestros Horarios</h3>
+          <div id="carouselHorarios" class="carousel slide" data-ride="carousel" data-interval="3000">
+            <div class="carousel-inner">
+              @foreach($aSucursales as $index => $sucursal)
+              <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                <div class="detail-box text-center">
+                  <h4>{{ $sucursal->nombre }}</h4>
+                  <p>{{ $sucursal->horario }}</p>
+                </div>
+              </div>
+              @endforeach
             </div>
           </div>
-        </div>
-        <div class="col-12 footer-info">
-          <p>
-            &copy; <span id="displayYear"></span> All Rights Reserved By
-            <a href="https://html.design/" target="_blank">DePc Suite</a>
-          </p>
         </div>
       </div>
+    </div>
+    <div class="col-12 footer-info">
+      <p>
+        &copy; <span id="displayYear"></span> All Rights Reserved By
+        <a href="https://html.design/" target="_blank">DePc Suite</a>
+      </p>
+    </div>
+    </div>
+    </div>
   </footer>
-  <!-- footer section -->
-
+  </footer>
+  <!-- Footer Section -->
   <!-- jQery -->
   <script src="web/js/jquery-3.4.1.min.js"></script>
   <!-- popper js -->
