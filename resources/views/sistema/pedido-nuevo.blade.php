@@ -119,6 +119,16 @@ if (isset($msg)) {
             @endif
       </form>
 </div>
+<x-procesar-pagos :total="$pedido->total" />
+<button
+      type="button"
+      class="btn"
+      data-bs-toggle="modal"
+      data-bs-target="#procesarPagos" style="color:#007bff"
+      title="Terminal de pagos">
+      <i class="fa-solid fa-money-check"></i>
+</button>
+
 <script>
       $("#form1").validate();
 

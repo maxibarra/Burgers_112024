@@ -29,6 +29,8 @@
   <script src="{{ asset('js/localization/messages_es.js') }}"></script>
   <script src="{{ asset('js/funciones_generales.js') }}"></script>
   <script src="{{ asset('js/bootstrap-select.js') }}"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
   <script>
     function cambiarGrupo() {
